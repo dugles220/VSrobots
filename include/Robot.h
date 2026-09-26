@@ -2,29 +2,26 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
-class Robot{
+#include "Entity.h"
+
+class Robot : public Entity{
 private:
     int max_health = 0;
     int curr_health = 0;
-
     int damage = 0;
-
     int max_energy = 0;
     int curr_energy = 0;
-
     double exp = 0;
-
     char team = '0';
 public:
     // Конструкторы и деструктор
     Robot() = default;
     Robot(int healt, int energy, int damage);
-    virtual ~Robot() = default;
+    ~Robot() = default;
 
     // Взаимодействие, 
     void interact(Robot&);
     void level_up();
-    void move();
     void take_damage(int value);
     void take_heal(int value);
 
