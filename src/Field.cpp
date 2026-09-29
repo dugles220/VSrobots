@@ -12,6 +12,9 @@ Field::Field(int height, int width){
 
 }
 
+int Field::get_height() const{ return height; }
+int Field::get_width() const { return width; }
+
 void Field::extend_height(int value){
 
 }

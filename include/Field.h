@@ -14,6 +14,9 @@ public:
     Field(int height, int width);
     ~Field();
 
+    int get_width() const;
+    int get_height() const;
+
     void extend_height(int value);
     void extend_width(int value);
 
