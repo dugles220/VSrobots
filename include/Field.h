@@ -11,26 +11,29 @@
 
 class Field{
 public:
-    Field(int height, int width);
-    ~Field();
+    Field(size_t height, size_t width);
+    ~Field() = default;
 
-    int get_width() const;
-    int get_height() const;
+    size_t get_width() const;
+    size_t get_height() const;
 
-    void extend_height(int value);
-    void extend_width(int value);
+    const Cell& get_cell(size_t x, size_t y) const;
+    // Cell& get_cell(size_t x, size_t y);
 
-    void add_robot();
-    void delete_robot();
-    void move_robot();
+    // void extend_height(int value);
+    // void extend_width(int value);
+
+    // void add_robot();
+    // void delete_robot();
+    // void move_robot();
 
 private:
 
+    size_t height = 0;
+    size_t width = 0;
     std::vector<std::vector<Cell>> grid;
-    int height = 0;
-    int width = 0;
     std::vector<Robot> robots;
 
 };
 
-#endif FIELD_H
+#endif

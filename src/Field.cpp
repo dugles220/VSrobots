@@ -1,7 +1,7 @@
 #include "Field.h"
 #include <stdexcept>
 
-Field::Field(int height, int width){
+Field::Field(size_t height, size_t width): height(height), width(width), grid(height, std::vector<Cell>(width)){
 
     if(height < MINIMAL_SIZE || width < MINIMAL_SIZE){
         throw std::invalid_argument("The minimum field size is 3x3!");
@@ -12,25 +12,35 @@ Field::Field(int height, int width){
 
 }
 
-int Field::get_height() const{ return height; }
-int Field::get_width() const { return width; }
+size_t Field::get_height() const{ return height; }
+size_t Field::get_width() const { return width; }
 
-void Field::extend_height(int value){
+const Cell& Field::get_cell(size_t x, size_t y) const{
 
-}
+    if(x >= get_width() || y >= get_height()){
+        throw std::invalid_argument("(x,y) coordinates are out of field!");
+    }
 
-void Field::extend_width(int value){
-
-}
-
-void Field::add_robot(){
+    return grid[y][x];
 
 }
 
-void Field::delete_robot(){
+// void Field::extend_height(int value){
 
-}
+// }
 
-void Field::move_robot(){
+// void Field::extend_width(int value){
 
-}
+// }
+
+// void Field::add_robot(){
+
+// }
+
+// void Field::delete_robot(){
+
+// }
+
+// void Field::move_robot(){
+
+// }
