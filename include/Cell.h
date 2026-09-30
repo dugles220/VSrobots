@@ -3,11 +3,12 @@
 #define CELL_H
 
 #include "Entity.h"
+#include <memory>
 
 class Cell{
 private:
     bool is_passable = true;
-    Entity *entity = nullptr;
+    std::shared_ptr<Entity> entity = nullptr;
 
 public:
     Cell() = default;
@@ -17,8 +18,9 @@ public:
     void set_passability(bool value);
 
     bool is_occupied() const;
-    Entity* get_entity() const;
-    void set_entity(Entity *entity);    
+    std::shared_ptr<Entity> get_entity() const;
+
+    void set_entity(std::shared_ptr<Entity> entity);    
 
 };
 

@@ -6,6 +6,6 @@ void Cell::set_passability(bool value){ is_passable = value; }
 
 bool Cell::is_occupied() const{ return entity != nullptr; }
 
-Entity* Cell::get_entity() const{ return entity; }
+std::shared_ptr<Entity> Cell::get_entity() const{ return entity; }
 
-void Cell::set_entity(Entity *ent){ entity = ent; }
+void Cell::set_entity(std::shared_ptr<Entity> entity){ this->entity = entity; }
