@@ -1,9 +1,6 @@
 #include "Robot.h"
 #include <stdexcept>
 
-
-Robot::Robot() = default;
-
 Robot::Robot(int health, int energy, int damage){
 
     if(health <= 0){
