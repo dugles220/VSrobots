@@ -1,6 +1,6 @@
 CC = g++
 TARGET = $(notdir $(patsubst %/,%,$(CURDIR)))
-FLAGS = -Wall -Wextra -Werror -std=c++20 -g
+FLAGS = -Wall -Wextra -Werror -std=c++20 -g -Iinclude
 SRC_DIR = src
 OBJ_DIR = obj
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
