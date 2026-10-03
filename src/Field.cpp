@@ -24,6 +24,15 @@ const Cell& Field::get_cell(size_t x, size_t y) const{
     return grid[y][x];
 }
 
+Cell& Field::get_cell(size_t x, size_t y){
+
+    if(!are_coord_valid(x, y)){
+        throw std::invalid_argument("(x,y) coordinates are out of field!");
+    }
+
+    return grid[y][x];
+}
+
 // void Field::extend_height(int value){
 
 // }
@@ -41,17 +50,27 @@ void Field::spawn_robot(size_t x, size_t y, int health, int energy, int damage){
     get_cell(x, y).set_entity(new_robot);
 }
 
-// void Field::delete_robot(){
+void Field::remove_robot(std::shared_ptr<Robot> robot){
 
-// }
+    for(size_t y = 0; y < get_height(); y++){
+        for(size_t x = 0; x < get_width(); x++){
+            if(get_cell(x, y).get_entity() == robot){
+                get_cell(x, y).set_entity(nullptr);
+                return;
+            }
+        }
+    }
+}
 
-void Field::move_robot(std::shared_ptr<Robot> robot, size_t x, size_t y){
+void Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y){
 
-    if(!are_coord_valid(x, y)){
+    if(!are_coord_valid(new_x, new_y)){
         throw std::invalid_argument("(x,y) coordinates are out of field!");
     }
 
-    
+    remove_robot(robot);
+
+    get_cell(new_x, new_y).set_entity(robot);
 
 }
 
