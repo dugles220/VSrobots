@@ -16,7 +16,7 @@ private:
 public:
     // Конструкторы и деструктор
     Robot() = default;
-    Robot(int healt, int energy, int damage);
+    Robot(int health, int energy, int damage);
     ~Robot() = default;
 
     // Взаимодействие, 

@@ -15,7 +15,7 @@ void ConsoleRenderer::render(const Field& field){
 
                 auto entity = cell.get_entity();
 
-                if(const Robot* robot = dynamic_cast<Robot*>(entity)){ 
+                if(const std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){ 
                     if(robot->get_team() == 'P'){
                         std::cout << " P ";
                     }
