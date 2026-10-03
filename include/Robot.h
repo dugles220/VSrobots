@@ -3,6 +3,7 @@
 #define ROBOT_H
 
 #include "Entity.h"
+#include <memory>
 
 class Robot : public Entity{
 private:
@@ -20,7 +21,7 @@ public:
     ~Robot() = default;
 
     // Взаимодействие, 
-    void interact(Robot&);
+    void interact(std::shared_ptr<Robot> other_robot);
     void level_up();
     void take_damage(int value);
     void take_heal(int value);

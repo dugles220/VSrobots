@@ -24,12 +24,12 @@ Robot::Robot(int health, int energy, int damage){
 }
 
 
-void Robot::interact(Robot& other_robot){
+void Robot::interact(std::shared_ptr<Robot> other_robot){
 
-    if(get_team() == other_robot.get_team()){
-        other_robot.take_heal(get_damage());
+    if(get_team() == other_robot->get_team()){
+        other_robot->take_heal(get_damage());
     } else {
-        other_robot.take_damage(get_damage());
+        other_robot->take_damage(get_damage());
     }
 
 }
