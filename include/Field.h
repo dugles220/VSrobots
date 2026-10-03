@@ -21,9 +21,8 @@ public:
     const Cell& get_cell(size_t x, size_t y) const;
     Cell& get_cell(size_t x, size_t y);
 
-    void spawn_robot(size_t x, size_t y, int health, int energy, int damage);
-    void move_robot(Cell& cell, size_t x, size_t y);
-    void move_robot(std::shared_ptr<Robot> robot, size_t x, size_t y);
+    std::shared_ptr<Robot> spawn_robot(size_t x, size_t y, int health, int energy, int damage, char team);
+    bool move_robot(std::shared_ptr<Robot> robot, size_t x, size_t y);
     void remove_robot(std::shared_ptr<Robot> robot);
 
     bool are_coord_valid(size_t x, size_t y) const;

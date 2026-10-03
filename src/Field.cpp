@@ -41,13 +41,17 @@ Cell& Field::get_cell(size_t x, size_t y){
 
 // }
 
-void Field::spawn_robot(size_t x, size_t y, int health, int energy, int damage){
+std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y, int health, int energy, int damage, char team = '0'){
 
     auto new_robot = std::make_shared<Robot>(health, energy, damage);
+
+    new_robot.get()->set_team(team);
 
     entities.push_back(new_robot);
 
     get_cell(x, y).set_entity(new_robot);
+
+    return new_robot;
 }
 
 void Field::remove_robot(std::shared_ptr<Robot> robot){
@@ -62,16 +66,27 @@ void Field::remove_robot(std::shared_ptr<Robot> robot){
     }
 }
 
-void Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y){
+bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y){
 
     if(!are_coord_valid(new_x, new_y)){
-        throw std::invalid_argument("(x,y) coordinates are out of field!");
+        return false;
+    }
+
+    Cell& cell = get_cell(new_x, new_y);
+
+    if(cell.is_occupied()){
+        robot->interact(std::dynamic_pointer_cast<Robot>(cell.get_entity()));
+        return false;
+    }
+    else if(!cell.get_passability()){
+        return false;
     }
 
     remove_robot(robot);
 
     get_cell(new_x, new_y).set_entity(robot);
 
+    return true;
 }
 
 bool Field::are_coord_valid(size_t x, size_t y) const{
