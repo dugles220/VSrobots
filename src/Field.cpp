@@ -1,5 +1,6 @@
 #include "Field.h"
 #include <stdexcept>
+#include <algorithm>
 
 Field::Field(size_t height, size_t width): height(height), width(width), grid(height, std::vector<Cell>(width)){
 
@@ -113,6 +114,14 @@ void Field::init_demo_level() {
     grid[2][4].set_passability(false);
 
     //враги
-    spawn_robot(1, 1, 100, 15, 10, 'E');
-    spawn_robot(5, 5, 120, 20, 10, 'E');
+bool Field::remove_entity_from_vec(std::shared_ptr<Robot> entity){
+
+    auto it = std::find(entities.begin(), entities.end(), entity);
+
+    if(it != entities.end()){
+        entities.erase(it);
+        return true;
+    }
+
+    return false;
 }

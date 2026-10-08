@@ -44,6 +44,8 @@ private:
     std::vector<std::vector<Cell>> grid;
     std::vector<std::shared_ptr<Robot>> entities;
 
+    bool remove_entity_from_vec(std::shared_ptr<Robot> entity);
+
 };
 
 #endif
