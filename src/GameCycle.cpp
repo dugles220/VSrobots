@@ -78,7 +78,7 @@ void GameCycle::process_player_input(){
 
     char input = '0';
 
-    std::string good_symbs = "wasd";
+    std::string good_symbs = "wasdn";
 
     while(input == '0'){
 
@@ -104,6 +104,12 @@ void GameCycle::process_player_input(){
         case 'd':
             if (field.move_robot(player, x_player + 1, y_player)) x_player += 1;
             break;
+        case 'n':
+            break;
+    }
+
+}
+
 bool GameCycle::is_game_over(){
 
     if(player->get_curr_health() == 0){
