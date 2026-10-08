@@ -33,14 +33,6 @@ Cell& Field::get_cell(size_t x, size_t y){
     return grid[y][x];
 }
 
-// void Field::extend_height(int value){
-
-// }
-
-// void Field::extend_width(int value){
-
-// }
-
 std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y, int health, int energy, int damage, char team = '0'){
 
     auto new_robot = std::make_shared<Robot>(health, energy, damage);
