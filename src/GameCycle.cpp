@@ -20,15 +20,7 @@ void GameCycle::run(){
 
     renderer.render(field);
 
-    while(true){
-
-        if(player->get_curr_health() == 0){
-            std::cout << "GAME OVER!" << std::endl;
-            break;
-        } else if(field.get_entities().capacity() == 1){
-            std::cout << "YOU WON!" << std::endl;
-            break;
-        }
+    while(!is_game_over()){
 
         process_player_input();
         process_enemies();
@@ -112,6 +104,15 @@ void GameCycle::process_player_input(){
         case 'd':
             if (field.move_robot(player, x_player + 1, y_player)) x_player += 1;
             break;
+bool GameCycle::is_game_over(){
+
+    if(player->get_curr_health() == 0){
+        std::cout << "GAME OVER!" << std::endl;
+        return true;
+    } else if(field.get_entities().size() == 1){
+        std::cout << "YOU WON!" << std::endl;
+        return true;
     }
 
+    return false;
 }
