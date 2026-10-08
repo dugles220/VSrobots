@@ -18,6 +18,7 @@ public:
     GameCycle(size_t field_height, size_t field_width);
 
     void run();
+    bool is_game_over();
 
     void process_player_input();
     void process_enemies();
