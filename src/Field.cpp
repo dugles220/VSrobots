@@ -88,3 +88,21 @@ bool Field::are_coord_valid(size_t x, size_t y) const{
 
     return true;
 }
+
+bool Field::get_entity_position(const std::shared_ptr<Entity> entity, size_t& out_x, size_t& out_y) const{
+    for(size_t y = 0; y < get_height(); y++){
+        for(size_t x = 0; x < get_width(); x++){
+            if(grid[y][x].get_entity() == entity){
+                out_x = x;
+                out_y = y;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+std::vector<std::shared_ptr<Robot>>& Field::get_entities(){
+    return entities;
+}
+
