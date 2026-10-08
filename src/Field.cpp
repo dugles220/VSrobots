@@ -49,13 +49,11 @@ std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y, int health, int en
 
 void Field::remove_robot(std::shared_ptr<Robot> robot){
 
-    for(size_t y = 0; y < get_height(); y++){
-        for(size_t x = 0; x < get_width(); x++){
-            if(get_cell(x, y).get_entity() == robot){
+    size_t x, y;
+
+    if(get_entity_position(robot, x, y)){
                 get_cell(x, y).set_entity(nullptr);
-                return;
-            }
-        }
+        remove_entity_from_vec(robot);
     }
 }
 
