@@ -68,17 +68,17 @@ void Robot::increase_energy(int value){
 
 }
 
-void Robot::decrease_energy(int value){
+bool Robot::decrease_energy(int value){
 
     int new_energy = get_curr_energy() - value;
 
     if(new_energy < 0){
-        set_curr_energy(0);
-        return;
+        return false;
     }
 
     set_curr_energy(new_energy);
 
+    return true;
 }
 
 int Robot::get_max_health() const{ return max_health; }

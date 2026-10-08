@@ -29,7 +29,7 @@ public:
     void take_damage(int value);
     void take_heal(int value);
     void increase_energy(int value);
-    void decrease_energy(int value);
+    bool decrease_energy(int value);
 
     // Геттеры и сеттеры
     int get_max_health() const;
