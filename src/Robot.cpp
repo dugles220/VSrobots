@@ -46,6 +46,32 @@ void Robot::take_heal(int value){
     set_curr_health(get_curr_health() + value);
 }
 
+void Robot::increase_energy(int value){
+
+    int new_energy = get_curr_energy() + value;
+
+    if(new_energy > get_max_energy()){
+        set_curr_energy(get_max_energy());
+        return;
+    }
+
+    set_curr_energy(new_energy);
+
+}
+
+void Robot::decrease_energy(int value){
+
+    int new_energy = get_curr_energy() - value;
+
+    if(new_energy < 0){
+        set_curr_energy(0);
+        return;
+    }
+
+    set_curr_energy(new_energy);
+
+}
+
 int Robot::get_max_health() const{ return max_health; }
 int Robot::get_curr_health() const { return curr_health; }
 int Robot::get_damage() const { return damage; }

@@ -5,6 +5,9 @@
 #include "Entity.h"
 #include <memory>
 
+#define MOVE_COST 5
+#define ATTACK_COST 10 
+
 class Robot : public Entity{
 private:
     int max_health = 0;
@@ -25,6 +28,8 @@ public:
     void level_up();
     void take_damage(int value);
     void take_heal(int value);
+    void increase_energy(int value);
+    void decrease_energy(int value);
 
     // Геттеры и сеттеры
     int get_max_health() const;
