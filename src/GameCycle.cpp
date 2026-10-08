@@ -60,9 +60,7 @@ void GameCycle::process_enemies(){
         else if(ey > py) next_ey--;
 
         field.move_robot(entity, next_ex, next_ey);
-        
     }
-
 }
 
 void GameCycle::process_end_turn(){
@@ -96,7 +94,6 @@ void GameCycle::process_player_input(){
 
     switch (input){
         // w и s поменяны местами, т.к. начало координат слева сверху
-        // а мне лень это фиксить на данном этапе
         case 's':
             if (field.move_robot(player, x_player, y_player + 1)) y_player += 1;
             break;
