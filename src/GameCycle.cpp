@@ -42,6 +42,11 @@ void GameCycle::process_enemies(){
 
         if(entity == player || entity->get_team() != 'E') continue;
 
+        if(entity->get_curr_health() == 0){
+            field.remove_robot(entity);
+            continue;
+        }
+
         size_t ex, ey;
 
         field.get_entity_position(entity, ex, ey);
