@@ -39,11 +39,20 @@ void Robot::level_up(){
 }
 
 void Robot::take_damage(int value){
-    set_curr_health(get_curr_health() - value);
+    
+    int new_health = get_curr_health() - value;
+
+    if(new_health < 0) set_curr_health(0);
+    else set_curr_health(new_health);
 }
 
 void Robot::take_heal(int value){
-    set_curr_health(get_curr_health() + value);
+
+    int new_health = get_curr_health() + value;
+
+    if(new_health > get_max_health()) set_curr_health(get_max_health());
+
+    set_curr_health(new_health);
 }
 
 void Robot::increase_energy(int value){
