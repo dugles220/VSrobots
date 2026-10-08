@@ -29,6 +29,8 @@ void GameCycle::run(){
         process_end_turn();
 
         renderer.render(field);
+        std::cout << "HEALTH: " << player->get_max_health() << "/" << player->get_max_health() << std::endl;
+        std::cout << "ENERGY: " << player->get_curr_energy() << "/" << player->get_max_energy() << std::endl;
     }
 }
 
