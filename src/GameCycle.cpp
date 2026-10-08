@@ -16,6 +16,14 @@ void GameCycle::run(){
 
     while(true){
 
+        if(player->get_curr_health() == 0){
+            std::cout << "GAME OVER!" << std::endl;
+            break;
+        } else if(field.get_entities().capacity() == 1){
+            std::cout << "YOU WON!" << std::endl;
+            break;
+        }
+
         process_player_input();
         process_enemies();
         process_end_turn();
