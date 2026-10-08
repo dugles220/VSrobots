@@ -106,3 +106,13 @@ std::vector<std::shared_ptr<Robot>>& Field::get_entities(){
     return entities;
 }
 
+void Field::init_demo_level() {
+    // стены
+    grid[2][2].set_passability(false);
+    grid[2][3].set_passability(false);
+    grid[2][4].set_passability(false);
+
+    //враги
+    spawn_robot(1, 1, 100, 15, 10, 'E');
+    spawn_robot(5, 5, 120, 20, 10, 'E');
+}
