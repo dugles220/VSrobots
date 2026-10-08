@@ -18,19 +18,24 @@ public:
     size_t get_width() const;
     size_t get_height() const;
 
-    const Cell& get_cell(size_t x, size_t y) const;
+
     Cell& get_cell(size_t x, size_t y);
+    const Cell& get_cell(size_t x, size_t y) const;
+
+
+    bool get_entity_position(const std::shared_ptr<Entity> entity, size_t& x, size_t& y) const;
+    std::vector<std::shared_ptr<Robot>>& get_entities();
 
     std::shared_ptr<Robot> spawn_robot(size_t x, size_t y, int health, int energy, int damage, char team);
-    bool move_robot(std::shared_ptr<Robot> robot, size_t x, size_t y);
     void remove_robot(std::shared_ptr<Robot> robot);
+
+
+    bool move_robot(std::shared_ptr<Robot> robot, size_t x, size_t y);
+
 
     bool are_coord_valid(size_t x, size_t y) const;
 
-    // void extend_height(int value);
-    // void extend_width(int value);
-
-    
+    void init_demo_level();
 
 private:
 
