@@ -11,7 +11,10 @@ GameCycle::GameCycle(size_t field_height, size_t field_width):
     renderer(ConsoleRenderer()),
     x_player(field_width / 2),
     y_player(field_height / 2),
-    player(field.spawn_robot(x_player, y_player, 100, 100, 20, 'P')){}
+    player(field.spawn_robot(x_player, y_player, 100, 100, 20, 'P')){
+
+        field.init_demo_level();
+    }
 
 void GameCycle::run(){
 
