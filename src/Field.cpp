@@ -110,10 +110,22 @@ std::vector<std::shared_ptr<Robot>>& Field::get_entities(){
 void Field::init_demo_level() {
     // стены
     grid[2][2].set_passability(false);
+    grid[3][3].set_passability(false);
     grid[2][3].set_passability(false);
     grid[2][4].set_passability(false);
 
+    grid[6][7].set_passability(false);
+    grid[5][7].set_passability(false);
+    grid[7][7].set_passability(false);
+    grid[7][8].set_passability(false);
+    grid[8][7].set_passability(false);
+
     //враги
+    spawn_robot(1, 1, 50, 30, 5, 'E');
+    spawn_robot(6, 9, 60, 40, 5, 'E');
+    spawn_robot(1, 9, 30, 50, 5, 'E');
+    spawn_robot(9, 3, 10, 40, 20, 'E');
+}
 bool Field::remove_entity_from_vec(std::shared_ptr<Robot> entity){
 
     auto it = std::find(entities.begin(), entities.end(), entity);
