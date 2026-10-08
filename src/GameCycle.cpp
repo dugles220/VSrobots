@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
-#define P_ENERGY_INCREASE 10
-#define E_ENERGY_INCREASE 5
+#define P_ENERGY_INCREASE 5 
+#define E_ENERGY_INCREASE 2 
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width)),
