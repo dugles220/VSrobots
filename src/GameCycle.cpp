@@ -3,6 +3,9 @@
 #include <iostream>
 #include <string>
 
+#define P_ENERGY_INCREASE 10
+#define E_ENERGY_INCREASE 5
+
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width)),
     renderer(ConsoleRenderer()),
@@ -63,6 +66,16 @@ void GameCycle::process_enemies(){
 }
 
 void GameCycle::process_end_turn(){
+
+    player->increase_energy(P_ENERGY_INCREASE);
+
+    for(const auto& entity :field.get_entities()){
+
+        if(entity == player || entity->get_team() != 'E') continue;
+
+        entity->increase_energy(E_ENERGY_INCREASE);
+
+    }
 
 }
 
