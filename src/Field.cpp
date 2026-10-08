@@ -68,6 +68,7 @@ bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y)
 
     if(cell.is_occupied()){
         robot->interact(std::dynamic_pointer_cast<Robot>(cell.get_entity()));
+        robot->decrease_energy(ATTACK_COST);
         return false;
     }
     else if(!cell.get_passability()){
@@ -75,8 +76,8 @@ bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y)
     }
 
     remove_robot(robot);
-
     get_cell(new_x, new_y).set_entity(robot);
+    robot->decrease_energy(MOVE_COST);
 
     return true;
 }
