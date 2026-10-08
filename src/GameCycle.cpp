@@ -26,6 +26,30 @@ void GameCycle::run(){
 
 void GameCycle::process_enemies(){
 
+    size_t px, py;
+
+    if(!field.get_entity_position(player, px, py)) return;
+
+    for(const auto& entity : field.get_entities()){
+
+        if(entity == player || entity->get_team() != 'E') continue;
+
+        size_t ex, ey;
+
+        field.get_entity_position(entity, ex, ey);
+
+        size_t next_ex = ex;
+        size_t next_ey = ey;
+
+        if(ex < px) next_ex++;
+        else if(ex > px) next_ex--;
+        else if(ey < py) next_ey++;
+        else if(ey > py) next_ey--;
+
+        field.move_robot(entity, next_ex, next_ey);
+        
+    }
+
 }
 
 void GameCycle::process_end_turn(){
