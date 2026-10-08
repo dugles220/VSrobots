@@ -9,8 +9,8 @@ Robot::Robot(int health, int energy, int damage){
     if(energy <= 0){
         throw std::invalid_argument("Energy value must be greater than 0!");
     }
-    if(damage <= 0){
-        throw std::invalid_argument("Damage value must be greater than 0!");
+    if(damage < 0){
+        throw std::invalid_argument("Damage value must be positive!");
     }
 
     max_health = health;
