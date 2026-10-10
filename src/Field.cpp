@@ -58,13 +58,20 @@ std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y, int health, int en
     return new_robot;
 }
 
-void Field::remove_robot(std::shared_ptr<Robot> robot){
+void Field::delete_entity(std::shared_ptr<Entity> entity){
 
     size_t x, y;
 
-    if(get_entity_position(robot, x, y)){
+    if(get_entity_position(entity, x, y)){
+
                 get_cell(x, y).set_entity(nullptr);
-        remove_entity_from_vec(robot);
+
+        auto it = std::find(entities.begin(), entities.end(), entity);
+
+        if(it != entities.end()){
+            entities.erase(it);
+        }
+
     }
 }
 
@@ -140,15 +147,4 @@ void Field::init_demo_level() {
     spawn_robot(6, 9, 60, 40, 5, 'E');
     spawn_robot(1, 9, 30, 50, 5, 'E');
     spawn_robot(9, 3, 10, 40, 20, 'E');
-}
-bool Field::remove_entity_from_vec(std::shared_ptr<Robot> entity){
-
-    auto it = std::find(entities.begin(), entities.end(), entity);
-
-    if(it != entities.end()){
-        entities.erase(it);
-        return true;
-    }
-
-    return false;
 }
