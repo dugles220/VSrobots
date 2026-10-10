@@ -9,3 +9,7 @@ bool Cell::is_occupied() const{ return entity != nullptr; }
 std::shared_ptr<Entity> Cell::get_entity() const{ return entity; }
 
 void Cell::set_entity(std::shared_ptr<Entity> entity){ this->entity = entity; }
+
+bool Cell::get_visibility() const{ return is_visible; }
+
+void Cell::set_visibility(bool value){ is_visible = value; }

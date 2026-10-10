@@ -23,6 +23,7 @@ public:
     void process_player_input();
     void process_enemies();
     void process_end_turn();
+    void update_visibility();
 
 };
 

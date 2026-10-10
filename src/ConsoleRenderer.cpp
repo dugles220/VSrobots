@@ -11,27 +11,21 @@ void ConsoleRenderer::render(const Field& field){
 
             const Cell& cell = field.get_cell(x, y);
 
-            if(cell.is_occupied()){
+            if(cell.get_visibility() == true){
+                if(cell.is_occupied()){
 
-                auto entity = cell.get_entity();
+                    auto entity = cell.get_entity();
 
-                if(const std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){ 
-                    if(robot->get_team() == 'P'){
-                        std::cout << " P ";
+                    if(const std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){ 
+                        if(robot->get_team() == 'P'){ std::cout << " P "; }
+                        else{ std::cout << " E "; }
                     }
-                    else{
-                        std::cout << " E ";
-                    }
-                }
-            }
-            else{
-                if(cell.get_passability() != true){
-                    std::cout << " @ " ;
                 }
                 else{
-                    std::cout << " ~ ";
+                    if(cell.get_passability() != true){ std::cout << " # " ; }
+                    else{ std::cout << " . "; }
                 }
-            }
+            } else { std::cout << " ? "; }  
 
         }
         std::cout << "\n";

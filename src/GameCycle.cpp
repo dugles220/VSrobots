@@ -5,6 +5,7 @@
 
 #define P_ENERGY_INCREASE 5 
 #define E_ENERGY_INCREASE 2 
+#define VISIBILITY_RADIUS 3 
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width)),
@@ -18,6 +19,8 @@ GameCycle::GameCycle(size_t field_height, size_t field_width):
 
 void GameCycle::run(){
 
+
+    update_visibility();
     renderer.render(field);
 
     while(!is_game_over()){
@@ -26,6 +29,7 @@ void GameCycle::run(){
         process_enemies();
         process_end_turn();
 
+        update_visibility();
         renderer.render(field);
         std::cout << "HEALTH: " << player->get_curr_health() << "/" << player->get_max_health() << std::endl;
         std::cout << "ENERGY: " << player->get_curr_energy() << "/" << player->get_max_energy() << std::endl;
@@ -122,4 +126,31 @@ bool GameCycle::is_game_over(){
     }
 
     return false;
+}
+
+void GameCycle::update_visibility(){
+
+    int px = (int)x_player;
+    int py = (int)y_player;
+
+   
+    for(int y_shift = -VISIBILITY_RADIUS; y_shift <= VISIBILITY_RADIUS; y_shift++){
+
+        int y = py + y_shift;
+
+        if(y < 0 || y >= (int)field.get_height()) continue;
+
+        for(int x_shift = -VISIBILITY_RADIUS; x_shift <= VISIBILITY_RADIUS; x_shift++){
+
+            int x = px + x_shift;
+
+            if(x < 0 || x >= (int)field.get_width()) continue;
+
+            if(x_shift * x_shift + y_shift * y_shift <= VISIBILITY_RADIUS * VISIBILITY_RADIUS){
+
+                field.get_cell(x, y).set_visibility(true);
+            }
+        }
+    }
+
 }
