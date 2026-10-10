@@ -1,16 +1,19 @@
 #include "Field.h"
 #include <stdexcept>
 #include <algorithm>
+#include <format>
 
 Field::Field(size_t height, size_t width): height(height), width(width), grid(height, std::vector<Cell>(width)){
 
     if(height < MINIMAL_SIZE || width < MINIMAL_SIZE){
-        throw std::invalid_argument("The minimum field size is 3x3!");
+        throw std::invalid_argument(std::format(
+            "Error: minimal size of the field is {} by {}", 
+            MINIMAL_SIZE, MINIMAL_SIZE));
     }
     else if(height > MAX_SIZE || width > MAX_SIZE){
-        throw std::invalid_argument("The maximum side size is 20!");
+        throw std::invalid_argument(std::format(
+            "Error: maximum side size is {}", MAX_SIZE));
     }
-
 }
 
 size_t Field::get_height() const{ return height; }
@@ -19,7 +22,8 @@ size_t Field::get_width() const { return width; }
 const Cell& Field::get_cell(size_t x, size_t y) const{
 
     if(!are_coord_valid(x, y)){
-        throw std::invalid_argument("(x,y) coordinates are out of field!");
+        throw std::invalid_argument(std::format(
+            "Error: ({}, {}) are out of field", x, y));
     }
 
     return grid[y][x];
@@ -28,7 +32,8 @@ const Cell& Field::get_cell(size_t x, size_t y) const{
 Cell& Field::get_cell(size_t x, size_t y){
 
     if(!are_coord_valid(x, y)){
-        throw std::invalid_argument("(x,y) coordinates are out of field!");
+        throw std::invalid_argument(std::format(
+            "Error: ({}, {}) are out of field", x, y));
     }
 
     return grid[y][x];
@@ -36,11 +41,17 @@ Cell& Field::get_cell(size_t x, size_t y){
 
 std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y, int health, int energy, int damage, char team = '0'){
 
+    if(!are_coord_valid(x, y)){
+        throw std::invalid_argument(std::format(
+            "Error: ({}, {}) are out of field", x, y));
+    }
+
     auto new_robot = std::make_shared<Robot>(health, energy, damage);
 
     new_robot.get()->set_team(team);
 
     entities.push_back(new_robot);
+
 
     get_cell(x, y).set_entity(new_robot);
 
@@ -71,14 +82,14 @@ if(robot->decrease_energy(ATTACK_COST)){
         }
         return false;
     }
-    else if(!cell.get_passability()){
-        return false;
-    }
-
-    if(robot->decrease_energy(MOVE_COST)){
+    else if(!cell.get_passability()){ return false; } 
+    else if(robot->decrease_energy(MOVE_COST)){
 
         size_t curr_x, curr_y;
-        get_entity_position(robot, curr_x, curr_y);
+        if(!get_entity_position(robot, curr_x, curr_y)){
+            throw "Error: unable to find entity\n";
+        }
+
         get_cell(curr_x, curr_y).set_entity(nullptr);
     get_cell(new_x, new_y).set_entity(robot);
         return true;
