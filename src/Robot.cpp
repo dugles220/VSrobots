@@ -1,7 +1,9 @@
 #include "Robot.h"
 #include <stdexcept>
 
-Robot::Robot(int health, int energy, int damage){
+Robot::Robot(int health, int energy, int damage):
+    max_health(health), curr_health(health), damage(damage),
+    max_energy(energy), curr_energy(energy){
 
     if(health <= 0){
         throw std::invalid_argument("Health value must be greater than 0!");
@@ -12,15 +14,6 @@ Robot::Robot(int health, int energy, int damage){
     if(damage < 0){
         throw std::invalid_argument("Damage value must be positive!");
     }
-
-    max_health = health;
-    curr_health = health;
-
-    max_energy = energy;
-    curr_energy = energy;
-
-    this->damage = damage;
-
 }
 
 
