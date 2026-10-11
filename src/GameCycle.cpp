@@ -13,13 +13,12 @@ GameCycle::GameCycle(size_t field_height, size_t field_width):
     renderer(ConsoleRenderer()),
     x_player(field_width / 2),
     y_player(field_height / 2),
-    player(field.spawn_robot(x_player, y_player, 100, 100, 20, 3, 'P')){
+    player(field.spawn_robot(x_player, y_player, 500, 200, 100, 3, 'P')){
 
         field.init_demo_level();
     }
 
 void GameCycle::run(){
-
 
     update_visibility();
     renderer.render(field);
@@ -38,11 +37,8 @@ void GameCycle::run(){
 
 void GameCycle::process_enemies(){
 
-    size_t px, py;
-
-    if(!field.get_entity_position(player, px, py)) return;
-
     for(const auto& entity : field.get_entities()){
+
 
         if(entity == nullptr || entity == player || entity->get_team() != 'E') continue;
 
@@ -51,41 +47,9 @@ void GameCycle::process_enemies(){
             continue;
         }
 
-        size_t ex, ey;
-        field.get_entity_position(entity, ex, ey);
-
-        int available_moves = entity->get_speed();
-        
-        while(available_moves > 0){
-
-            size_t next_ex = ex;
-            size_t next_ey = ey;
-
-            if(ex < px) next_ex++;
-            else if(ex > px) next_ex--;
-            else if(ey < py) next_ey++;
-            else if(ey > py) next_ey--;
-
-            int move_cost = field.get_cell(next_ex, next_ey).get_pass_difficulty();
-
-            if(move_cost <= available_moves){
-                if(field.move_robot(entity, next_ex, next_ey)){
-                    ex = next_ex;
-                    ey = next_ey;
-                    available_moves -= move_cost;
-                }
-                else {
-                    // отнимаем единицу, чтобы роботы не уходили
-                    // в бесконечный цикл
-                    available_moves -= 1;
-                    continue;
-                }
-            } else {
-                renderer.render(field);
-                break;
-            }
-            renderer.render(field);
-            usleep(600000);
+        if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
+            process_robot(robot);
+        }
         }
     }
 }
@@ -98,10 +62,10 @@ void GameCycle::process_end_turn(){
 
         if(entity == player || entity->get_team() != 'E') continue;
 
-        entity->increase_energy(E_ENERGY_INCREASE);
-
+        if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
+            robot->increase_energy(E_ENERGY_INCREASE);
+        }
     }
-
 }
 
 void GameCycle::process_player_input(){
@@ -209,6 +173,54 @@ void GameCycle::update_visibility(){
                 field.get_cell(x, y).set_visibility(true);
             }
         }
+    }
+
+}
+
+void GameCycle::process_robot(std::shared_ptr<Robot> robot){
+
+    size_t x_robot, y_robot;
+    field.get_entity_position(robot, x_robot, y_robot);
+
+    int available_moves = robot->get_speed();
+
+
+    while(available_moves > 0){
+
+        size_t new_x = x_robot, new_y = y_robot;
+        
+        if(x_robot < x_player) new_x++;
+        else if(x_robot > x_player) new_x--;
+        else if(y_robot < y_player) new_y++;
+        else if(y_robot > y_player) new_y--;
+
+        Cell& new_cell = field.get_cell(new_x, new_y);
+
+        if(new_cell.is_occupied()){
+            field.move_robot(robot, new_x, new_y);
+            available_moves = 0;
+            break;
+        }
+        
+        int move_cost = field.get_cell(new_x, new_y).get_pass_difficulty();
+
+        if(move_cost <= available_moves){
+
+            if(field.move_robot(robot, new_x, new_y)){
+                x_robot = new_x;
+                y_robot = new_y;
+                available_moves -= move_cost;
+            } else{
+                available_moves -= 1; 
+                continue;
+            }
+        } else {
+            renderer.render(field);
+            break;
+        }
+        renderer.render(field);
+        usleep(600000);
+
     }
 
 }

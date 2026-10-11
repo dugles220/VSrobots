@@ -21,6 +21,7 @@ public:
     bool is_game_over();
 
     void process_player_input();
+    void process_robot(std::shared_ptr<Robot> robot);
     void process_enemies();
     void process_end_turn();
     void update_visibility();

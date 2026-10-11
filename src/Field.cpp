@@ -1,4 +1,5 @@
 #include "Field.h"
+
 #include <stdexcept>
 #include <algorithm>
 #include <format>
@@ -47,13 +48,9 @@ std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y,
             "Error: ({}, {}) are out of field", x, y));
     }
 
-    auto new_robot = std::make_shared<Robot>(health, energy, damage);
-
-    new_robot->set_team(team);
-    new_robot->set_speed(speed);
+    auto new_robot = std::make_shared<Robot>(health, energy, damage, speed, team);
 
     entities.push_back(new_robot);
-
 
     get_cell(x, y).set_entity(new_robot);
 
@@ -66,7 +63,14 @@ void Field::delete_entity(std::shared_ptr<Entity> entity){
 
     if(get_entity_position(entity, x, y)){
 
-                get_cell(x, y).set_entity(nullptr);
+        if(std::dynamic_pointer_cast<Factory>(entity)){
+
+            for(size_t i = y; i < y + 2; i++){
+                for(size_t j = x; j < x + 2; j++){
+                    get_cell(j, i).set_entity(nullptr);
+                }
+            }
+        } else get_cell(x, y).set_entity(nullptr);
 
         auto it = std::find(entities.begin(), entities.end(), entity);
 
@@ -86,8 +90,8 @@ bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y)
     Cell& cell = get_cell(new_x, new_y);
 
     if(cell.is_occupied()){
-if(robot->decrease_energy(ATTACK_COST)){
-        robot->interact(std::dynamic_pointer_cast<Robot>(cell.get_entity()));
+        if(robot->decrease_energy(ATTACK_COST)){
+            robot->interact(cell.get_entity());
         }
         return false;
     }
@@ -100,9 +104,9 @@ if(robot->decrease_energy(ATTACK_COST)){
         }
 
         get_cell(curr_x, curr_y).set_entity(nullptr);
-    get_cell(new_x, new_y).set_entity(robot);
+        get_cell(new_x, new_y).set_entity(robot);
         return true;
-}
+    }
 
     return false;
 }
@@ -127,7 +131,7 @@ bool Field::get_entity_position(const std::shared_ptr<Entity> entity, size_t& ou
     return false;
 }
 
-std::vector<std::shared_ptr<Robot>>& Field::get_entities(){
+std::vector<std::shared_ptr<Entity>>& Field::get_entities(){
     return entities;
 }
 
