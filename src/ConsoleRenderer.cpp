@@ -20,6 +20,9 @@ void ConsoleRenderer::render(const Field& field){
                         if(robot->get_team() == 'P'){ std::cout << " P "; }
                         else{ std::cout << " E "; }
                     }
+                    else if(const std::shared_ptr<Factory> f = std::dynamic_pointer_cast<Factory>(entity)){
+                        std::cout << " F " ;
+                    }
                 }
                 else{
                     if(cell.get_passability() == true){

@@ -4,6 +4,7 @@
 
 #include "Cell.h"
 #include "Robot.h"
+#include "Factory.h"
 #include <vector>
 #include <memory>
 
@@ -28,6 +29,8 @@ public:
 
     std::shared_ptr<Robot> spawn_robot(size_t x, size_t y,
         int health, int energy, int damage, int speed, char team);
+    std::shared_ptr<Factory> spawn_factory(size_t x, size_t y, int health,
+        int performance, char team);
     void delete_entity(std::shared_ptr<Entity> entity);
 
 

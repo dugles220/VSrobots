@@ -29,9 +29,12 @@ void GameCycle::run(){
         process_enemies();
         process_end_turn();
 
+        turn++;
+
         renderer.render(field);
         std::cout << "HEALTH: " << player->get_curr_health() << "/" << player->get_max_health() << std::endl;
         std::cout << "ENERGY: " << player->get_curr_energy() << "/" << player->get_max_energy() << std::endl;
+        std::cout << "TURN: " << turn << std::endl;
     }
 }
 
@@ -50,6 +53,8 @@ void GameCycle::process_enemies(){
         if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
             process_robot(robot);
         }
+        else if(std::shared_ptr<Factory> factory = std::dynamic_pointer_cast<Factory>(entity)){
+            process_factory(factory);
         }
     }
 }
@@ -224,3 +229,40 @@ void GameCycle::process_robot(std::shared_ptr<Robot> robot){
     }
 
 }
+
+void GameCycle::process_factory(std::shared_ptr<Factory> factory){
+
+    if(turn == 0 || (int)turn % factory->get_performance() != 0) return;
+
+    size_t x_factory, y_factory;
+    field.get_entity_position(factory, x_factory, y_factory);
+
+    size_t y_robot = y_factory - 1;
+    size_t x_robot = x_factory - 1;
+
+    bool space_available = false;
+
+    for(; y_robot < y_robot + 3; y_robot++){
+        for(; x_robot < x_factory + 3; x_robot++){
+
+            if(!field.are_coord_valid(x_robot, y_robot)) continue;
+
+            Cell& cell = field.get_cell(x_robot, y_robot);
+
+            if(!cell.is_occupied() && cell.get_passability()){
+                space_available = true;
+                break;
+            }
+        }
+        if(space_available) break;
+    }
+
+    if(space_available){
+        field.spawn_robot(x_robot, y_robot, 100, 50, 10, 2, 'E'); 
+    }
+
+    renderer.render(field);
+
+}
+
+size_t GameCycle::get_turn() const{ return turn; }

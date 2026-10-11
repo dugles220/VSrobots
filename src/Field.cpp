@@ -57,6 +57,27 @@ std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y,
     return new_robot;
 }
 
+std::shared_ptr<Factory> Field::spawn_factory(size_t x, size_t y, 
+    int health, int performance, char team){
+
+    if(!are_coord_valid(x, y) || !are_coord_valid(x + 1, y + 1)){
+        throw std::invalid_argument(std::format(
+            "Error: Cannot spawn factory on ({}, {})", x, y));
+    }
+
+    auto new_factory = std::make_shared<Factory>(health, performance, team);
+
+    entities.push_back(new_factory);
+
+    for(size_t i = y; i < y + 2; i++){
+        for(size_t j = x; j < x + 2; j++){
+            get_cell(i, j).set_entity(new_factory); 
+        }
+    }
+
+    return new_factory;
+}
+
 void Field::delete_entity(std::shared_ptr<Entity> entity){
 
     size_t x, y;
@@ -154,13 +175,11 @@ void Field::init_demo_level() {
     grid[5][2].set_pass_difficulty(2);
     grid[5][3].set_pass_difficulty(2);
 
-    grid[2][7].set_pass_difficulty(3);
-    grid[1][6].set_pass_difficulty(3);
-    grid[1][7].set_pass_difficulty(3);
-
     //враги
     spawn_robot(1, 1, 50, 30, 5, 1, 'E');
     spawn_robot(6, 9, 60, 40, 5, 2, 'E');
     spawn_robot(1, 9, 30, 50, 5, 3, 'E');
     spawn_robot(9, 3, 10, 40, 20, 1, 'E');
+
+    spawn_factory(7, 2, 200, 8, 'E');
 }

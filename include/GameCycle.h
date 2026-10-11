@@ -12,6 +12,7 @@ private:
     size_t x_player;
     size_t y_player;
     std::shared_ptr<Robot> player;
+    size_t turn = 0;
 
 public:
 
@@ -22,9 +23,12 @@ public:
 
     void process_player_input();
     void process_robot(std::shared_ptr<Robot> robot);
+    void process_factory(std::shared_ptr<Factory> factory);
     void process_enemies();
     void process_end_turn();
     void update_visibility();
+
+    size_t get_turn() const;
 
 };
 
