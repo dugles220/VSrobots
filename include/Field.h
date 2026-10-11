@@ -26,7 +26,8 @@ public:
     bool get_entity_position(const std::shared_ptr<Entity> entity, size_t& x, size_t& y) const;
     std::vector<std::shared_ptr<Robot>>& get_entities();
 
-    std::shared_ptr<Robot> spawn_robot(size_t x, size_t y, int health, int energy, int damage, char team);
+    std::shared_ptr<Robot> spawn_robot(size_t x, size_t y,
+        int health, int energy, int damage, int speed, char team);
     void delete_entity(std::shared_ptr<Entity> entity);
 
 

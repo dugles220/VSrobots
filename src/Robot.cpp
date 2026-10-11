@@ -123,3 +123,13 @@ void Robot::add_exp(double value){
 void Robot::set_team(char team){
     this->team = team;
 }
+
+int Robot::get_speed() const{ return speed; }
+
+void Robot::set_speed(int value){
+
+    if(value < 0) speed = 0;
+    if(value > 5) speed = 5;
+
+    speed = value;
+}

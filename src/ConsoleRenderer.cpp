@@ -22,11 +22,25 @@ void ConsoleRenderer::render(const Field& field){
                     }
                 }
                 else{
-                    if(cell.get_passability() != true){ std::cout << " # " ; }
-                    else{ std::cout << " . "; }
+                    if(cell.get_passability() == true){
+                        size_t difficulty = cell.get_pass_difficulty();
+                        switch (difficulty){
+                            case 1:
+                                std::cout << " . ";
+                                break;
+                            case 2:
+                                std::cout << " ~ ";
+                                break;
+                            case 3:
+                                std::cout << " ^ ";
+                                break;
+                            default:
+                                std::cout << " ? ";
+                        }
+                    }
+                    else{ std::cout << " # " ; }
                 }
             } else { std::cout << " ? "; }  
-
         }
         std::cout << "\n";
     }

@@ -10,12 +10,18 @@
 
 class Robot : public Entity{
 private:
+
     int max_health = 0;
     int curr_health = 0;
+
     int damage = 0;
+
     int max_energy = 0;
     int curr_energy = 0;
+    int speed = 0;
+
     double exp = 0;
+
     char team = '0';
 public:
     // Конструкторы и деструктор
@@ -44,6 +50,8 @@ public:
     int get_curr_energy() const;
     void set_max_energy(int value);
     void set_curr_energy(int value);
+    int get_speed() const;
+    void set_speed(int value);
 
     double get_exp() const;
     void set_exp(double value);

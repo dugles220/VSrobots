@@ -39,7 +39,8 @@ Cell& Field::get_cell(size_t x, size_t y){
     return grid[y][x];
 }
 
-std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y, int health, int energy, int damage, char team = '0'){
+std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y,
+    int health, int energy, int damage, int speed = 1, char team = '0'){
 
     if(!are_coord_valid(x, y)){
         throw std::invalid_argument(std::format(
@@ -48,7 +49,8 @@ std::shared_ptr<Robot> Field::spawn_robot(size_t x, size_t y, int health, int en
 
     auto new_robot = std::make_shared<Robot>(health, energy, damage);
 
-    new_robot.get()->set_team(team);
+    new_robot->set_team(team);
+    new_robot->set_speed(speed);
 
     entities.push_back(new_robot);
 
@@ -142,9 +144,19 @@ void Field::init_demo_level() {
     grid[7][8].set_passability(false);
     grid[8][7].set_passability(false);
 
+    grid[6][2].set_pass_difficulty(3);
+    grid[7][2].set_pass_difficulty(3);
+    grid[6][3].set_pass_difficulty(3);
+    grid[5][2].set_pass_difficulty(2);
+    grid[5][3].set_pass_difficulty(2);
+
+    grid[2][7].set_pass_difficulty(3);
+    grid[1][6].set_pass_difficulty(3);
+    grid[1][7].set_pass_difficulty(3);
+
     //враги
-    spawn_robot(1, 1, 50, 30, 5, 'E');
-    spawn_robot(6, 9, 60, 40, 5, 'E');
-    spawn_robot(1, 9, 30, 50, 5, 'E');
-    spawn_robot(9, 3, 10, 40, 20, 'E');
+    spawn_robot(1, 1, 50, 30, 5, 1, 'E');
+    spawn_robot(6, 9, 60, 40, 5, 2, 'E');
+    spawn_robot(1, 9, 30, 50, 5, 3, 'E');
+    spawn_robot(9, 3, 10, 40, 20, 1, 'E');
 }

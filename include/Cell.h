@@ -6,8 +6,10 @@
 #include <memory>
 
 class Cell{
+
 private:
 
+    size_t pass_difficulty = 1;
     bool is_passable = true;
     bool is_visible = false;
     std::shared_ptr<Entity> entity = nullptr;
@@ -21,10 +23,12 @@ public:
     bool get_visibility() const;
     bool is_occupied() const;
     std::shared_ptr<Entity> get_entity() const;
+    size_t get_pass_difficulty() const;
 
     void set_entity(std::shared_ptr<Entity> entity);    
     void set_passability(bool value);
     void set_visibility(bool value);
+    void set_pass_difficulty(int value);
 
 };
 
