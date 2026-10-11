@@ -116,9 +116,8 @@ void GameCycle::process_player_input(){
 
         if(cell.is_occupied()){
             field.move_robot(player, new_x, new_y);
-            available_moves -= 1;
-            input = '0';
-            continue;
+            available_moves = 0;
+            break;
         }
 
         int move_cost = field.get_cell(new_x, new_y).get_pass_difficulty();
