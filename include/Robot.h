@@ -3,7 +3,6 @@
 #define ROBOT_H
 
 #include "Entity.h"
-#include <memory>
 
 #define MOVE_COST 5
 #define ATTACK_COST 10 
@@ -11,38 +10,26 @@
 class Robot : public Entity{
 private:
 
-    int max_health = 0;
-    int curr_health = 0;
+    int damage;
 
-    int damage = 0;
+    int max_energy;
+    int curr_energy;
 
-    int max_energy = 0;
-    int curr_energy = 0;
-    int speed = 0;
+    double exp;
 
-    double exp = 0;
-
-    char team = '0';
 public:
     // Конструкторы и деструктор
-    Robot() = default;
-    Robot(int health, int energy, int damage);
+    Robot(int health, int energy, int damage, int speed, char team);
     ~Robot() = default;
 
     // Взаимодействие, 
-    void interact(std::shared_ptr<Robot> other_robot);
+    void interact(std::shared_ptr<Entity> entity);
     void level_up();
-    void take_damage(int value);
-    void take_heal(int value);
+
     void increase_energy(int value);
     bool decrease_energy(int value);
 
     // Геттеры и сеттеры
-    int get_max_health() const;
-    int get_curr_health() const;
-    void set_max_health(int value);
-    void set_curr_health(int value);
-
     int get_damage() const;
     void set_damage(int value);
 
@@ -50,15 +37,10 @@ public:
     int get_curr_energy() const;
     void set_max_energy(int value);
     void set_curr_energy(int value);
-    int get_speed() const;
-    void set_speed(int value);
 
     double get_exp() const;
     void set_exp(double value);
     void add_exp(double to_add);
-
-    char get_team() const;
-    void set_team(char team);
 
 };
 
