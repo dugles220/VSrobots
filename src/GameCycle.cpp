@@ -111,6 +111,12 @@ void GameCycle::process_player_input(){
                 available_moves = 0;
                 continue;
         }
+        
+        if(!field.are_coord_valid(new_x, new_y)){
+            std::cout << "End of the map! Pick another direction!\n";
+            input = '0';
+            continue;
+        }
 
         Cell& cell = field.get_cell(new_x, new_y);
 
