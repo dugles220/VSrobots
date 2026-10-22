@@ -29,7 +29,7 @@ public:
     Cell& get_cell(size_t x, size_t y);
     const Cell& get_cell(size_t x, size_t y) const;
 
-
+    std::shared_ptr<Entity> get_player() const;
     bool get_entity_position(const std::shared_ptr<Entity> entity, size_t& x, size_t& y) const;
     std::vector<std::shared_ptr<Entity>>& get_entities();
 

@@ -139,6 +139,20 @@ bool Field::are_coord_valid(size_t x, size_t y) const{
     return true;
 }
 
+std::shared_ptr<Entity> Field::get_player() const{
+    for(size_t y = 0; y < get_height(); y++){
+        for(size_t x = 0; x < get_width(); x++){
+
+            std::shared_ptr<Entity> curr = grid[y][x].get_entity();
+
+            if(curr != nullptr && curr->get_team() == PLAYER_TEAM){
+                return curr;
+            }
+        }
+    }
+    return nullptr;
+}
+
 bool Field::get_entity_position(const std::shared_ptr<Entity> entity, size_t& out_x, size_t& out_y) const{
     for(size_t y = 0; y < get_height(); y++){
         for(size_t x = 0; x < get_width(); x++){

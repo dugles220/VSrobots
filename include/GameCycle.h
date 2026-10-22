@@ -18,9 +18,6 @@ class GameCycle{
 private:
     Field field;
     ConsoleRenderer renderer;
-    size_t x_player;
-    size_t y_player;
-    std::shared_ptr<Robot> player;
     size_t turn = 0;
 
 public:
@@ -28,14 +25,14 @@ public:
     GameCycle(size_t field_height, size_t field_width);
 
     void run();
-    bool is_game_over();
+    bool is_game_over(std::shared_ptr<Robot> player);
 
-    void process_player_input();
-    void process_robot(std::shared_ptr<Robot> robot);
+    void process_player_input(std::shared_ptr<Robot> player);
+    void process_robot(std::shared_ptr<Robot> robot, std::shared_ptr<Robot> player);
     void process_factory(std::shared_ptr<Factory> factory);
-    void process_enemies();
-    void process_end_turn();
-    void update_visibility();
+    void process_enemies(std::shared_ptr<Robot> player);
+    void process_end_turn(std::shared_ptr<Robot> player);
+    void update_visibility(std::shared_ptr<Robot> player);
 
     size_t get_turn() const;
 

@@ -6,30 +6,34 @@
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width)),
-    renderer(ConsoleRenderer()),
-    x_player(field_width / 2),
-    y_player(field_height / 2),
-    player(field.spawn_robot(
-        x_player,
-        y_player,
-        DEFAULT_HEALTH * 5,
-        DEFAULT_ENERGY * 5,
-        DEFAULT_DAMAGE * 5,
-        DEFAULT_SPEED * 3,
-        PLAYER_TEAM)){
+    renderer(ConsoleRenderer()){
+        field.spawn_robot(
+            field_height / 2,
+            field_width / 2,
+            DEFAULT_HEALTH * 5,
+            DEFAULT_ENERGY * 5,
+            DEFAULT_DAMAGE * 5,
+            DEFAULT_SPEED * 3,
+            PLAYER_TEAM);
         field.init_demo_level();
     }
 
 void GameCycle::run(){
 
-    update_visibility();
+
+    std::shared_ptr<Robot> player = std::dynamic_pointer_cast<Robot>(field.get_player());
+    if(player == nullptr){
+        throw "Player isn't found!\n";
+    }
+
+    update_visibility(player);
     renderer.render(field);
 
-    while(!is_game_over()){
+    while(!is_game_over(player)){
 
-        process_player_input();
-        process_enemies();
-        process_end_turn();
+        process_player_input(player);
+        process_enemies(player);
+        process_end_turn(player);
 
         turn++;
 
@@ -40,11 +44,12 @@ void GameCycle::run(){
     }
 }
 
-void GameCycle::process_enemies(){
+void GameCycle::process_enemies(std::shared_ptr<Robot> player){
 
     for(const auto& entity : field.get_entities()){
 
-        if(entity == nullptr || entity == player || entity->get_team() != ENEMY_TEAM) continue;
+        if(entity == nullptr ||
+           entity->get_team() != ENEMY_TEAM) continue;
 
         if(entity->get_curr_health() == 0){
             field.delete_entity(entity);
@@ -52,7 +57,7 @@ void GameCycle::process_enemies(){
         }
 
         if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
-            process_robot(robot);
+            process_robot(robot, player);
         }
         else if(std::shared_ptr<Factory> factory = std::dynamic_pointer_cast<Factory>(entity)){
             process_factory(factory);
@@ -60,13 +65,13 @@ void GameCycle::process_enemies(){
     }
 }
 
-void GameCycle::process_end_turn(){
+void GameCycle::process_end_turn(std::shared_ptr<Robot> player){
 
     player->increase_energy(P_ENERGY_INCREASE);
 
     for(const auto& entity :field.get_entities()){
 
-        if(entity == player || entity->get_team() != 'E') continue;
+        if(entity == player || entity->get_team() != ENEMY_TEAM) continue;
 
         if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
             robot->increase_energy(E_ENERGY_INCREASE);
@@ -74,13 +79,17 @@ void GameCycle::process_end_turn(){
     }
 }
 
-void GameCycle::process_player_input(){
+void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
     char input = '0';
 
     std::string good_symbs = "wasdnWASDN";
 
     int available_moves = player->get_speed();
+
+    size_t px, py;
+
+    field.get_entity_position(player, px, py);
 
     while(available_moves > 0){
 
@@ -91,8 +100,8 @@ void GameCycle::process_player_input(){
             if(good_symbs.find(input) == std::string::npos){ input = '0'; } 
         }
 
-        size_t new_x = x_player;
-        size_t new_y = y_player;
+        size_t new_x = px;
+        size_t new_y = py;
 
         switch (input){
             // w и s поменяны местами, т.к. начало координат слева сверху
@@ -131,8 +140,8 @@ void GameCycle::process_player_input(){
 
         if(move_cost <= available_moves){
             if(field.move_robot(player, new_x, new_y)){
-                x_player = new_x;
-                y_player = new_y;
+                px = new_x;
+                py = new_y;
                 available_moves -= move_cost;
             } else{
                 std::cout << "Not enough energy!\n";
@@ -141,14 +150,14 @@ void GameCycle::process_player_input(){
             std::cout << "Not enough speed!\n";
         }
 
-        update_visibility();
+        update_visibility(player);
         renderer.render(field);
 
         input = '0';
     }
 }
 
-bool GameCycle::is_game_over(){
+bool GameCycle::is_game_over(std::shared_ptr<Robot> player){
 
     if(player->get_curr_health() == 0){
         std::cout << "GAME OVER!" << std::endl;
@@ -161,10 +170,13 @@ bool GameCycle::is_game_over(){
     return false;
 }
 
-void GameCycle::update_visibility(){
+void GameCycle::update_visibility(std::shared_ptr<Robot> player){
 
-    int px = (int)x_player;
-    int py = (int)y_player;
+    size_t u_px, u_py; // unsigned координаты
+    field.get_entity_position(player, u_px, u_py); 
+
+    int px = (int)u_px;
+    int py = (int)u_py;
 
    
     for(int y_shift = -VISIBILITY_RADIUS; y_shift <= VISIBILITY_RADIUS; y_shift++){
@@ -188,22 +200,23 @@ void GameCycle::update_visibility(){
 
 }
 
-void GameCycle::process_robot(std::shared_ptr<Robot> robot){
+void GameCycle::process_robot(std::shared_ptr<Robot> robot, std::shared_ptr<Robot> player){
 
-    size_t x_robot, y_robot;
-    field.get_entity_position(robot, x_robot, y_robot);
+    size_t rx, ry;
+    field.get_entity_position(robot, rx, ry);
+    size_t px, py;
+    field.get_entity_position(player, px, py);
 
     int available_moves = robot->get_speed();
 
-
     while(available_moves > 0){
 
-        size_t new_x = x_robot, new_y = y_robot;
+        size_t new_x = rx, new_y = ry;
         
-        if(x_robot < x_player) new_x++;
-        else if(x_robot > x_player) new_x--;
-        else if(y_robot < y_player) new_y++;
-        else if(y_robot > y_player) new_y--;
+        if(rx < px) new_x++;
+        else if(rx > px) new_x--;
+        else if(ry < py) new_y++;
+        else if(ry > py) new_y--;
 
         Cell& new_cell = field.get_cell(new_x, new_y);
 
@@ -218,8 +231,8 @@ void GameCycle::process_robot(std::shared_ptr<Robot> robot){
         if(move_cost <= available_moves){
 
             if(field.move_robot(robot, new_x, new_y)){
-                x_robot = new_x;
-                y_robot = new_y;
+                rx = new_x;
+                ry = new_y;
                 available_moves -= move_cost;
             } else{
                 available_moves -= 1; 
@@ -233,7 +246,6 @@ void GameCycle::process_robot(std::shared_ptr<Robot> robot){
         usleep(600000);
 
     }
-
 }
 
 void GameCycle::process_factory(std::shared_ptr<Factory> factory){
