@@ -23,7 +23,7 @@ public:
     void set_max_health(int health);
     void set_team(char team);
 
-    void interact(std::shared_ptr<Entity> entity);
+    bool interact(std::shared_ptr<Entity> entity);
 
     void take_damage(int value);
     void take_heal(int value);

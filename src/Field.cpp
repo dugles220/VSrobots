@@ -111,12 +111,10 @@ bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y)
     Cell& cell = get_cell(new_x, new_y);
 
     if(cell.is_occupied()){
-        if(robot->decrease_energy(ATTACK_COST)){
-            robot->interact(cell.get_entity());
-        }
+        robot->interact(cell.get_entity());
         return false;
     }
-    else if(!cell.get_passability()){ return false; } 
+    else if(cell.get_passability() == false){ return false; } 
     else if(robot->decrease_energy(MOVE_COST)){
 
         size_t curr_x, curr_y;
@@ -126,6 +124,24 @@ bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y)
 
         get_cell(curr_x, curr_y).set_entity(nullptr);
         get_cell(new_x, new_y).set_entity(robot);
+
+        return true;
+    }
+    return false;
+}
+
+bool Field::move_robot(std::shared_ptr<Robot> robot, Cell& cell){
+
+    if(robot->decrease_energy(MOVE_COST)){
+
+        size_t curr_x, curr_y;
+        if(!get_entity_position(robot, curr_x, curr_y)){
+            throw "Error: unable to find robot!\n";
+        }
+
+        get_cell(curr_x, curr_y).set_entity(nullptr);
+        cell.set_entity(robot);
+
         return true;
     }
 

@@ -25,7 +25,7 @@ public:
     Robot(int health, int energy, int damage, int speed, char team);
     ~Robot() = default;
 
-    void interact(std::shared_ptr<Entity> entity);
+    bool interact(std::shared_ptr<Entity> entity);
     void level_up();
 
     void increase_energy(int value);

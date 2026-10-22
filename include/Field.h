@@ -38,7 +38,7 @@ public:
 
 
     bool move_robot(std::shared_ptr<Robot> robot, size_t x, size_t y);
-
+    bool move_robot(std::shared_ptr<Robot> robot, Cell& cell);
 
     bool are_coord_valid(size_t x, size_t y) const;
 

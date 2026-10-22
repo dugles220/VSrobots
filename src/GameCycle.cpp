@@ -138,23 +138,27 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
         Cell& cell = field.get_cell(new_x, new_y);
 
         if(cell.is_occupied()){
-            field.move_robot(player, new_x, new_y);
-            available_moves = 0;
-            break;
+            if(player->interact(cell.get_entity())){
+                available_moves = 0;
+                break;
+            }
+            else{
+                std::cout << "Not enough energy to attack!\n";
+            }
         }
 
-        int move_cost = field.get_cell(new_x, new_y).get_pass_difficulty();
+        int move_cost = cell.get_pass_difficulty();
 
         if(move_cost <= available_moves){
-            if(field.move_robot(player, new_x, new_y)){
+            if(field.move_robot(player, cell)){
                 px = new_x;
                 py = new_y;
                 available_moves -= move_cost;
             } else{
-                std::cout << "Not enough energy!\n";
+                std::cout << "Not enough energy to move!\n";
             }
         } else{
-            std::cout << "Not enough speed!\n";
+            std::cout << "Not enough speed to pass the cell!\n";
         }
 
         update_visibility(player);
@@ -225,24 +229,24 @@ void GameCycle::process_robot(std::shared_ptr<Robot> robot, std::shared_ptr<Robo
         else if(ry < py) new_y++;
         else if(ry > py) new_y--;
 
-        Cell& new_cell = field.get_cell(new_x, new_y);
+        Cell& cell = field.get_cell(new_x, new_y);
 
-        if(new_cell.is_occupied()){
-            field.move_robot(robot, new_x, new_y);
+        if(cell.is_occupied()){
+            robot->interact(cell.get_entity());
             available_moves = 0;
             break;
         }
         
-        int move_cost = field.get_cell(new_x, new_y).get_pass_difficulty();
+        int move_cost = cell.get_pass_difficulty();
 
         if(move_cost <= available_moves){
 
-            if(field.move_robot(robot, new_x, new_y)){
+            if(field.move_robot(robot, cell)){
                 rx = new_x;
                 ry = new_y;
                 available_moves -= move_cost;
             } else{
-                available_moves -= 1; 
+                available_moves = 0; 
                 continue;
             }
         } else {

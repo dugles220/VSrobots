@@ -16,14 +16,20 @@ Robot::Robot(int health, int energy, int damage, int speed, char team):
     }
 }
 
-void Robot::interact(std::shared_ptr<Entity> entity){
+bool Robot::interact(std::shared_ptr<Entity> entity){
 
-    if(get_team() == entity->get_team()){
-        entity->take_heal(get_damage());
-    } else {
-        entity->take_damage(get_damage());
+    if(decrease_energy(ATTACK_COST) == true){
+
+        if(get_team() == entity->get_team()){
+            entity->take_heal(get_damage());
+        } else {
+            entity->take_damage(get_damage());
+        }
+        
+        return true;
     }
 
+    return false;
 }
 
 void Robot::level_up(){
