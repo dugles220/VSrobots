@@ -105,6 +105,8 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
             if(good_symbs.find(input) == std::string::npos){ input = '0'; } 
         }
 
+        input = tolower(input);
+
         size_t new_x = px;
         size_t new_y = py;
 
@@ -282,8 +284,8 @@ void GameCycle::process_factory(std::shared_ptr<Factory> factory){
 
     if(space_available){
         field.spawn_robot(
-            x_robot,
-            y_robot,
+            rx,
+            ry,
             DEFAULT_HEALTH,
             DEFAULT_ENERGY, 
             DEFAULT_DAMAGE, 
