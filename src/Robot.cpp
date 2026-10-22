@@ -2,8 +2,11 @@
 #include <stdexcept>
 
 Robot::Robot(int health, int energy, int damage, int speed, char team):
-    Entity(health, team), damage(damage),
-    max_energy(energy), curr_energy(energy), speed(speed){
+    Entity(health, team),
+    damage(damage),
+    speed(speed),
+    max_energy(energy),
+    curr_energy(energy){
 
     if(energy <= 0){
         throw std::invalid_argument("Energy value must be greater than 0!");
