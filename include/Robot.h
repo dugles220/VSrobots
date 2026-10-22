@@ -4,8 +4,6 @@
 
 #include "Entity.h"
 
-#define MOVE_COST 5
-#define ATTACK_COST 10
 #define MAX_SPEED 5
 
 class Robot : public Entity{

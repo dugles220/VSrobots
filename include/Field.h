@@ -11,6 +11,12 @@
 #define MINIMAL_SIZE 3
 #define MAX_SIZE 20
 
+#define MOVE_COST 5
+#define ATTACK_COST 10
+
+#define ENEMY_TEAM 'E'
+#define PLAYER_TEAM 'P'
+
 class Field{
 public:
     Field(size_t height, size_t width);
