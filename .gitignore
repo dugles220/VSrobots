@@ -2,3 +2,7 @@ obj/
 .vscode/
 VSrobots
 .VSCodeCounter/
+out/
+diagram.pu
+*.docx
+*.pdf
