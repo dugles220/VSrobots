@@ -38,8 +38,13 @@ void GameCycle::run(){
         turn++;
 
         renderer.render(field);
-        std::cout << "HEALTH: " << player->get_curr_health() << "/" << player->get_max_health() << std::endl;
-        std::cout << "ENERGY: " << player->get_curr_energy() << "/" << player->get_max_energy() << std::endl;
+
+        std::cout << "HEALTH: " << player->get_curr_health();
+        std::cout << "/" << player->get_max_health() << std::endl;
+
+        std::cout << "ENERGY: " << player->get_curr_energy();
+        std::cout << "/" << player->get_max_energy() << std::endl;
+
         std::cout << "TURN: " << turn << std::endl;
     }
 }
@@ -252,20 +257,20 @@ void GameCycle::process_factory(std::shared_ptr<Factory> factory){
 
     if(turn == 0 || (int)turn % factory->get_performance() != 0) return;
 
-    size_t x_factory, y_factory;
-    field.get_entity_position(factory, x_factory, y_factory);
+    size_t fx, fy; // factory_x, factory_y
+    field.get_entity_position(factory, fx, fy);
 
-    size_t y_robot = y_factory - 1;
-    size_t x_robot = x_factory - 1;
+    size_t ry = fy - 1; // robox_y
+    size_t rx = fx - 1; // robot_x
 
     bool space_available = false;
 
-    for(; y_robot < y_robot + 3; y_robot++){
-        for(; x_robot < x_factory + 3; x_robot++){
+    for(; ry < ry + 3; ry++){
+        for(; rx < fx + 3; rx++){
 
-            if(!field.are_coord_valid(x_robot, y_robot)) continue;
+            if(!field.are_coord_valid(rx, ry)) continue;
 
-            Cell& cell = field.get_cell(x_robot, y_robot);
+            Cell& cell = field.get_cell(rx, ry);
 
             if(!cell.is_occupied() && cell.get_passability()){
                 space_available = true;

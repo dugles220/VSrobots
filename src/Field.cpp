@@ -183,6 +183,7 @@ void Field::init_demo_level() {
     grid[7][8].set_passability(false);
     grid[8][7].set_passability(false);
 
+    // сложнопроходимые клетки
     grid[6][2].set_pass_difficulty(3);
     grid[7][2].set_pass_difficulty(3);
     grid[6][3].set_pass_difficulty(3);
