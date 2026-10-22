@@ -5,6 +5,7 @@
 #include "Entity.h"
 
 #define MAX_SPEED 5
+#define VISIBILITY_RADIUS 3
 
 class Robot : public Entity{
 private:

@@ -11,7 +11,6 @@
 
 #define P_ENERGY_INCREASE 5 
 #define E_ENERGY_INCREASE 2 
-#define VISIBILITY_RADIUS 3 
 
 class GameCycle{
 
