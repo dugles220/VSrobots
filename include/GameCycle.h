@@ -4,6 +4,17 @@
 #include "Field.h"
 #include "ConsoleRenderer.h"
 
+#define DEFAULT_SPEED 1
+#define DEFAULT_HEALTH 100
+#define DEFAULT_DAMAGE 10
+#define DEFAULT_ENERGY 100
+#define ENEMY_TEAM 'E'
+#define PLAYER_TEAM 'P'
+
+#define P_ENERGY_INCREASE 5 
+#define E_ENERGY_INCREASE 2 
+#define VISIBILITY_RADIUS 3 
+
 class GameCycle{
 
 private:

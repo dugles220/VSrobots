@@ -3,13 +3,15 @@
 #define CELL_H
 
 #include "Entity.h"
-#include <memory>
+
+#define MIN_PASS_DIFF 1
+#define MAX_PASS_DIFF 3
 
 class Cell{
 
 private:
 
-    size_t pass_difficulty = 1;
+    size_t pass_difficulty = MIN_PASS_DIFF;
     bool is_passable = true;
     bool is_visible = false;
     std::shared_ptr<Entity> entity = nullptr;

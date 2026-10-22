@@ -4,17 +4,19 @@
 #include <string>
 #include <unistd.h>
 
-#define P_ENERGY_INCREASE 5 
-#define E_ENERGY_INCREASE 2 
-#define VISIBILITY_RADIUS 3 
-
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width)),
     renderer(ConsoleRenderer()),
     x_player(field_width / 2),
     y_player(field_height / 2),
-    player(field.spawn_robot(x_player, y_player, 500, 200, 100, 3, 'P')){
-
+    player(field.spawn_robot(
+        x_player,
+        y_player,
+        DEFAULT_HEALTH * 5,
+        DEFAULT_ENERGY * 5,
+        DEFAULT_DAMAGE * 5,
+        DEFAULT_SPEED * 3,
+        PLAYER_TEAM)){
         field.init_demo_level();
     }
 
@@ -42,8 +44,7 @@ void GameCycle::process_enemies(){
 
     for(const auto& entity : field.get_entities()){
 
-
-        if(entity == nullptr || entity == player || entity->get_team() != 'E') continue;
+        if(entity == nullptr || entity == player || entity->get_team() != ENEMY_TEAM) continue;
 
         if(entity->get_curr_health() == 0){
             field.delete_entity(entity);
@@ -263,7 +264,15 @@ void GameCycle::process_factory(std::shared_ptr<Factory> factory){
     }
 
     if(space_available){
-        field.spawn_robot(x_robot, y_robot, 100, 50, 10, 2, 'E'); 
+        field.spawn_robot(
+            x_robot,
+            y_robot,
+            DEFAULT_HEALTH,
+            DEFAULT_ENERGY, 
+            DEFAULT_DAMAGE, 
+            DEFAULT_SPEED,
+            ENEMY_TEAM
+        ); 
     }
 
     renderer.render(field);

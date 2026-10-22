@@ -18,8 +18,8 @@ size_t Cell::get_pass_difficulty() const{ return pass_difficulty; }
 
 void Cell::set_pass_difficulty(int value){
 
-    if(value < 0) pass_difficulty = 1;
-    if(value > 3) pass_difficulty = 3;
+    if(value < MIN_PASS_DIFF) pass_difficulty = MIN_PASS_DIFF;
+    if(value > MAX_PASS_DIFF) pass_difficulty = MAX_PASS_DIFF;
 
     pass_difficulty = (size_t)value;
 }
