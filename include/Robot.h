@@ -6,6 +6,8 @@
 
 #define MAX_SPEED 5
 #define VISIBILITY_RADIUS 3
+#define MOVE_COST 5
+#define ATTACK_COST 10
 
 class Robot : public Entity{
 private:
