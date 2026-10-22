@@ -5,12 +5,14 @@
 #include "Entity.h"
 
 #define MOVE_COST 5
-#define ATTACK_COST 10 
+#define ATTACK_COST 10
+#define MAX_SPEED 5
 
 class Robot : public Entity{
 private:
 
     int damage;
+    int speed;
 
     int max_energy;
     int curr_energy;
@@ -18,18 +20,19 @@ private:
     double exp;
 
 public:
-    // Конструкторы и деструктор
+
     Robot(int health, int energy, int damage, int speed, char team);
     ~Robot() = default;
 
-    // Взаимодействие, 
     void interact(std::shared_ptr<Entity> entity);
     void level_up();
 
     void increase_energy(int value);
     bool decrease_energy(int value);
 
-    // Геттеры и сеттеры
+    int get_speed() const;
+    void set_speed(int speed);
+
     int get_damage() const;
     void set_damage(int value);
 

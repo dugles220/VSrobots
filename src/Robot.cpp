@@ -2,8 +2,8 @@
 #include <stdexcept>
 
 Robot::Robot(int health, int energy, int damage, int speed, char team):
-    Entity(health, speed, team), damage(damage),
-    max_energy(energy), curr_energy(energy){
+    Entity(health, team), damage(damage),
+    max_energy(energy), curr_energy(energy), speed(speed){
 
     if(energy <= 0){
         throw std::invalid_argument("Energy value must be greater than 0!");
@@ -53,10 +53,19 @@ bool Robot::decrease_energy(int value){
     return true;
 }
 
+int Robot::get_speed() const{ return speed; }
 int Robot::get_damage() const { return damage; }
 int Robot::get_max_energy() const { return max_energy; }
 int Robot::get_curr_energy() const { return curr_energy; }
 double Robot::get_exp() const { return exp; }
+
+void Robot::set_speed(int value){
+
+    if(value < 0) speed = 0;
+    if(value > MAX_SPEED) speed = MAX_SPEED;
+
+    speed = value;
+}
 
 void Robot::set_damage(int value){
     if(value < 0){ damage = 0; }
