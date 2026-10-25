@@ -137,6 +137,12 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
         Cell& cell = field.get_cell(new_x, new_y);
 
+        if(cell.get_passability() == false){
+            std::cout << "There is a wall on the way!\n";
+            input = '0';
+            continue;
+        }
+
         if(cell.is_occupied()){
             if(player->interact(cell.get_entity())){
                 available_moves = 0;
@@ -230,6 +236,10 @@ void GameCycle::process_robot(std::shared_ptr<Robot> robot, std::shared_ptr<Robo
         else if(ry > py) new_y--;
 
         Cell& cell = field.get_cell(new_x, new_y);
+
+        if(cell.get_passability() == false){
+            break;
+        }
 
         if(cell.is_occupied()){
             robot->interact(cell.get_entity());
