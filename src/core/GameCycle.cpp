@@ -86,7 +86,7 @@ void GameCycle::process_end_turn(std::shared_ptr<Robot> player){
 
 void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
-    char input = '0';
+    char input = BAD_INPUT;
 
     std::string good_symbs = "wasdnWASDN";
 
@@ -100,9 +100,9 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
         std::cout << "Move! Use WASD or N to stay.\n";
 
-        while(input == '0'){
+        while(input == BAD_INPUT){
             std::cin >> input;
-            if(good_symbs.find(input) == std::string::npos){ input = '0'; } 
+            if(good_symbs.find(input) == std::string::npos){ input = BAD_INPUT; } 
         }
 
         input = tolower(input);
@@ -131,7 +131,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
         
         if(!field.are_coord_valid(new_x, new_y)){
             std::cout << "End of the map! Pick another direction!\n";
-            input = '0';
+            input = BAD_INPUT; 
             continue;
         }
 
@@ -139,7 +139,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
         if(cell.get_passability() == false){
             std::cout << "There is a wall on the way!\n";
-            input = '0';
+            input = BAD_INPUT;
             continue;
         }
 
@@ -170,7 +170,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
         update_visibility(player);
         renderer.render(field);
 
-        input = '0';
+        input = BAD_INPUT;
     }
 }
 

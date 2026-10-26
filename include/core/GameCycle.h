@@ -12,6 +12,8 @@
 #define P_ENERGY_INCREASE 5 
 #define E_ENERGY_INCREASE 2 
 
+#define BAD_INPUT '0'
+
 class GameCycle{
 
 private:
