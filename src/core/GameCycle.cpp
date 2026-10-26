@@ -33,7 +33,7 @@ void GameCycle::run(){
 
         process_player_input(player);
         process_enemies(player);
-        process_end_turn(player);
+        process_end_turn();
 
         turn++;
 
@@ -70,16 +70,16 @@ void GameCycle::process_enemies(std::shared_ptr<Robot> player){
     }
 }
 
-void GameCycle::process_end_turn(std::shared_ptr<Robot> player){
-
-    player->increase_energy(P_ENERGY_INCREASE);
+void GameCycle::process_end_turn(){
 
     for(const auto& entity :field.get_entities()){
-
-        if(entity == player || entity->get_team() != ENEMY_TEAM) continue;
-
         if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
-            robot->increase_energy(E_ENERGY_INCREASE);
+
+            if(robot->get_team() == PLAYER_TEAM){ 
+                robot->increase_energy(P_ENERGY_INCREASE);
+            } else {
+                robot->increase_energy(E_ENERGY_INCREASE);
+            }
         }
     }
 }
