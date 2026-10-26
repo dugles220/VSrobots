@@ -151,20 +151,20 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
             else{
                 std::cout << "Not enough energy to attack!\n";
             }
-        }
-
-        int move_cost = cell.get_pass_difficulty();
-
-        if(move_cost <= available_moves){
-            if(field.move_robot(player, cell)){
-                px = new_x;
-                py = new_y;
-                available_moves -= move_cost;
-            } else{
-                std::cout << "Not enough energy to move!\n";
-            }
         } else{
-            std::cout << "Not enough speed to pass the cell!\n";
+            int move_cost = cell.get_pass_difficulty();
+
+            if(move_cost <= available_moves){
+                if(field.move_robot(player, cell)){
+                    px = new_x;
+                    py = new_y;
+                    available_moves -= move_cost;
+                } else{
+                    std::cout << "Not enough energy to move!\n";
+                }
+            } else{
+                std::cout << "Not enough speed to pass the cell!\n";
+            }
         }
 
         update_visibility(player);
