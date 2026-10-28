@@ -102,3 +102,22 @@ void Robot::add_exp(double value){
     exp += value;
 }
 
+void Robot::take_damage(int amount){
+
+    for(auto& status : statuses){
+        amount = status->absorb_damage(amount);
+        if(amount <= 0) break;
+    }
+
+    if(amount > 0) set_curr_health(get_curr_health() - amount);
+}
+
+void Robot::update_statuses(){
+    for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){
+        Status* s = statuses[i].get();
+
+        if(s->is_expired()){
+            statuses.erase(statuses.begin() + i);
+        }
+    }
+}

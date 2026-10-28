@@ -31,9 +31,10 @@ void GameCycle::run(){
 
     while(!is_game_over(player)){
 
+        process_start_turn();
         process_player_input(player);
         process_enemies(player);
-        process_end_turn(player);
+        process_end_turn();
 
         turn++;
 
@@ -70,23 +71,27 @@ void GameCycle::process_enemies(std::shared_ptr<Robot> player){
     }
 }
 
-void GameCycle::process_end_turn(std::shared_ptr<Robot> player){
-
-    player->increase_energy(P_ENERGY_INCREASE);
+void GameCycle::process_end_turn(){
 
     for(const auto& entity :field.get_entities()){
-
-        if(entity == player || entity->get_team() != ENEMY_TEAM) continue;
-
         if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
-            robot->increase_energy(E_ENERGY_INCREASE);
+
+            for(const auto& status : robot->get_statuses()){
+                status->execute_on_turn_end(robot);
+            }
+
+            if(robot->get_team() == PLAYER_TEAM){ 
+                robot->increase_energy(P_ENERGY_INCREASE);
+            } else {
+                robot->increase_energy(E_ENERGY_INCREASE);
+            }
         }
     }
 }
 
 void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
-    char input = '0';
+    char input = BAD_INPUT;
 
     std::string good_symbs = "wasdnWASDN";
 
@@ -100,9 +105,9 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
         std::cout << "Move! Use WASD or N to stay.\n";
 
-        while(input == '0'){
+        while(input == BAD_INPUT){
             std::cin >> input;
-            if(good_symbs.find(input) == std::string::npos){ input = '0'; } 
+            if(good_symbs.find(input) == std::string::npos){ input = BAD_INPUT; } 
         }
 
         input = tolower(input);
@@ -131,7 +136,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
         
         if(!field.are_coord_valid(new_x, new_y)){
             std::cout << "End of the map! Pick another direction!\n";
-            input = '0';
+            input = BAD_INPUT; 
             continue;
         }
 
@@ -139,7 +144,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
         if(cell.get_passability() == false){
             std::cout << "There is a wall on the way!\n";
-            input = '0';
+            input = BAD_INPUT;
             continue;
         }
 
@@ -170,7 +175,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
         update_visibility(player);
         renderer.render(field);
 
-        input = '0';
+        input = BAD_INPUT;
     }
 }
 
@@ -313,3 +318,19 @@ void GameCycle::process_factory(std::shared_ptr<Factory> factory){
 }
 
 size_t GameCycle::get_turn() const{ return turn; }
+
+void GameCycle::process_start_turn(){
+    for(const auto& entity : field.get_entities()){
+
+        if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
+
+            robot->update_statuses();
+
+            for(const auto& status : robot->get_statuses()){
+
+                status->execute_on_turn_start(robot);
+
+            }
+        }
+    }   
+}
