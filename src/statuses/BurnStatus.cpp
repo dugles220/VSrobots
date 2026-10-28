@@ -1,4 +1,5 @@
 #include "BurnStatus.h"
+#include "Robot.h"
 
 BurnStatus::BurnStatus(): damage(DEFAULT_BURN_DAMAGE),
                           turns(DEFAULT_BURN_DUR){}
