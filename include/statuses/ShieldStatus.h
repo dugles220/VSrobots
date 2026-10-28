@@ -9,13 +9,13 @@
 
 class ShieldStatus : public Status {
 private:
-    size_t damage_block;
+    int damage_block;
     bool is_broken;
 
 public:
 
     ShieldStatus();
-    ShieldStatus(size_t shield_points);
+    ShieldStatus(int shield_points);
 
     bool is_expired() const;
 

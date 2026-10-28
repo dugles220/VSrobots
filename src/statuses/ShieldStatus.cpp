@@ -2,8 +2,12 @@
 
 ShieldStatus::ShieldStatus() : damage_block(DEFAULT_DAMAGE_BLOCK) {}
 
-ShieldStatus::ShieldStatus(size_t damage_block) : damage_block(damage_block){
+ShieldStatus::ShieldStatus(int damage_block) : damage_block(damage_block){
     if(damage_block > MAX_DAMAGE_BLOCK) this->damage_block = MAX_DAMAGE_BLOCK;
+    else if(damage_block < 0){
+        this->damage_block = 0;
+        is_broken = true;
+    }
 }
 bool ShieldStatus::is_expired() const { return is_broken; }
 
