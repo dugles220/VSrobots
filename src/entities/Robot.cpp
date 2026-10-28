@@ -111,7 +111,7 @@ void Robot::take_damage(int amount){
         if(amount <= 0) break;
     }
 
-    if(amount > 0) set_curr_health(get_curr_health() - amount);
+    if(amount > 0) Entity::take_damage(amount);
 }
 
 void Robot::update_statuses(){
