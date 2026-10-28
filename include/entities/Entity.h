@@ -3,6 +3,7 @@
 #define ENTITY_H
 
 #include <memory>
+#include "GameConstants.h"
 
 class Entity{
 
