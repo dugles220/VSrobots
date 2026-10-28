@@ -6,10 +6,6 @@ SlowdownStatus::SlowdownStatus(size_t turns): turns(turns){
     if(turns > MAX_SLOWDOWN_DUR) this->turns = MAX_SLOWDOWN_DUR;
 }
 
-void SlowdownStatus::apply(std::shared_ptr<Robot>){}
-void SlowdownStatus::execute_on_turn_start(std::shared_ptr<Robot>){}
-void SlowdownStatus::execute_on_turn_end(std::shared_ptr<Robot>){}
-
 bool SlowdownStatus::is_expired() const { return turns == 0; }
 
 void SlowdownStatus::increase_turns(size_t value){

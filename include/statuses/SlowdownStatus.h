@@ -16,9 +16,6 @@ public:
     SlowdownStatus();
     SlowdownStatus(size_t turns);
 
-    void apply(std::shared_ptr<Robot>);
-    void execute_on_turn_start(std::shared_ptr<Robot>);
-    void execute_on_turn_end(std::shared_ptr<Robot>);
     bool is_expired() const;
 
     void increase_turns(size_t turns_count);

@@ -22,7 +22,6 @@ public:
 
     void apply(std::shared_ptr<Robot>);
     void execute_on_turn_start(std::shared_ptr<Robot> robot);
-    void execute_on_turn_end(std::shared_ptr<Robot>);
     bool is_expired() const;
 
     size_t get_damage() const;
