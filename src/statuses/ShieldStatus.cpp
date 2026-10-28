@@ -17,3 +17,12 @@ void ShieldStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
         }
     }
 }
+
+int ShieldStatus::absorb_damage(int incoming_damage){
+
+    if(is_broken) return incoming_damage;
+
+    if(incoming_damage <= damage_block) return 0;
+    else return incoming_damage - damage_block;
+
+}

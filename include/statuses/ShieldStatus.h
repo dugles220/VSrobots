@@ -19,6 +19,8 @@ public:
 
     bool is_expired() const;
 
+    int absorb_damage(int incoming_damage);
+
     void stack(std::vector<std::unique_ptr<Status>> statuses);
 
 };
