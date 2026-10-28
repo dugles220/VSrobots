@@ -19,8 +19,8 @@ public:
 
     BurnStatus();
     BurnStatus(size_t damage, size_t turns);
+    ~BurnStatus();
 
-    void apply(std::shared_ptr<Robot>);
     void execute_on_turn_start(std::shared_ptr<Robot> robot);
     bool is_expired() const;
 
