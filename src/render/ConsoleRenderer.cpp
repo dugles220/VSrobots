@@ -9,7 +9,7 @@ void ConsoleRenderer::render(const Field& field){
 
     // вычисляем координаты игрока
     size_t px, py;
-    field.get_entity_position(field.get_player(), px, py);
+    field.get_entity_position(field.get_player().get(), px, py);
 
     // проходимся по каждой клетке
     for(size_t y = 0; y < field.get_height(); y++){
@@ -39,7 +39,7 @@ void ConsoleRenderer::render(const Field& field){
                         */
                         else{ 
                             size_t rx, ry;
-                            field.get_entity_position(robot, rx, ry);
+                            field.get_entity_position(robot.get(), rx, ry);
 
                             int dist = std::pow(abs(px - rx), 2) + std::pow(abs(py - ry), 2);
 

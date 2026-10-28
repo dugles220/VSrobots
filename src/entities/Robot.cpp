@@ -1,4 +1,6 @@
 #include "Robot.h"
+#include "AIController.h"
+
 #include <stdexcept>
 
 Robot::Robot(int health, int energy, int damage, int speed, char team):
@@ -121,3 +123,12 @@ void Robot::update_statuses(){
         }
     }
 }
+
+void Robot::take_turn(TurnContext& context){
+
+    if(get_team() == ENEMY_TEAM){
+        context.ai.process_robot(this, context);
+    }
+}
+
+const std::vector<std::unique_ptr<Status>>& Robot::get_statuses(){ return statuses; }

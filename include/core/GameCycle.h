@@ -3,19 +3,13 @@
 
 #include "Field.h"
 #include "ConsoleRenderer.h"
+#include "AIController.h"
 
 #include "BurnStatus.h"
 #include "ShieldStatus.h"
 #include "OverloadStatus.h"
 #include "SlowdownStatus.h"
-
-#define DEFAULT_SPEED 1
-#define DEFAULT_HEALTH 100
-#define DEFAULT_DAMAGE 10
-#define DEFAULT_ENERGY 100
-
-#define P_ENERGY_INCREASE 5 
-#define E_ENERGY_INCREASE 2 
+#include "GameConstants.h"
 
 #define BAD_INPUT '0'
 
@@ -25,6 +19,7 @@ private:
     Field field;
     ConsoleRenderer renderer;
     size_t turn = 0;
+    AIController ai;
 
 public:
 

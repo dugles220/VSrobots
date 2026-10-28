@@ -3,6 +3,8 @@
 #define ENTITY_H
 
 #include <memory>
+#include "GameConstants.h"
+#include "TurnContext.h"
 
 class Entity{
 
@@ -15,18 +17,20 @@ public:
 
     Entity(int health, char team);
 
-    int get_curr_health() const;
-    int get_max_health() const;
-    char get_team() const;
+    virtual void take_turn(TurnContext& context) = 0;
 
-    void set_curr_health(int health);
-    void set_max_health(int health);
-    void set_team(char team);
+    virtual int get_curr_health() const;
+    virtual int get_max_health() const;
+    virtual char get_team() const;
 
-    bool interact(std::shared_ptr<Entity> entity);
+    virtual void set_curr_health(int health);
+    virtual void set_max_health(int health);
+    virtual void set_team(char team);
 
-    void take_damage(int value);
-    void take_heal(int value);
+    virtual bool interact(std::shared_ptr<Entity>) { return false; };
+
+    virtual void take_damage(int value);
+    virtual void take_heal(int value);
 
     virtual ~Entity() = default;
 };

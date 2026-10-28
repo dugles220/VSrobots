@@ -4,11 +4,12 @@
 
 #include "Entity.h"
 #include "Status.h"
+#include "GameConstants.h"
+#include "TurnContext.h"
+
+#include <memory>
 
 #define MAX_SPEED 5
-#define VISIBILITY_RADIUS 3
-#define MOVE_COST 5
-#define ATTACK_COST 10
 
 class Robot : public Entity{
 private:
@@ -28,6 +29,7 @@ public:
     Robot(int health, int energy, int damage, int speed, char team);
     ~Robot() = default;
 
+    void take_turn(TurnContext& context);
     bool interact(std::shared_ptr<Entity> entity);
     void level_up();
 
@@ -51,7 +53,7 @@ public:
 
     void take_damage(int value);
 
-    std::vector<std::unique_ptr<Status>>& get_statuses();
+    const std::vector<std::unique_ptr<Status>>& get_statuses();
     void update_statuses();
 
 };

@@ -82,10 +82,8 @@ void Field::delete_entity(std::shared_ptr<Entity> entity){
 
     size_t x, y;
 
-    if(get_entity_position(entity, x, y)){
-
+    if(get_entity_position(entity.get(), x, y)){
         if(std::dynamic_pointer_cast<Factory>(entity)){
-
             for(size_t i = y; i < y + 2; i++){
                 for(size_t j = x; j < x + 2; j++){
                     get_cell(j, i).set_entity(nullptr);
@@ -102,7 +100,7 @@ void Field::delete_entity(std::shared_ptr<Entity> entity){
     }
 }
 
-bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y){
+bool Field::move_robot(Robot& robot, size_t new_x, size_t new_y){
 
     if(!are_coord_valid(new_x, new_y)){
         return false;
@@ -111,36 +109,37 @@ bool Field::move_robot(std::shared_ptr<Robot> robot, size_t new_x, size_t new_y)
     Cell& cell = get_cell(new_x, new_y);
 
     if(cell.is_occupied()){
-        robot->interact(cell.get_entity());
+        robot.interact(cell.get_entity());
         return false;
     }
     else if(cell.get_passability() == false){ return false; } 
-    else if(robot->decrease_energy(MOVE_COST)){
+    else if(robot.decrease_energy(MOVE_COST)){
 
         size_t curr_x, curr_y;
-        if(!get_entity_position(robot, curr_x, curr_y)){
+        if(!get_entity_position(&robot, curr_x, curr_y)){
             throw "Error: unable to find entity\n";
         }
 
+        Cell& curr_cell = get_cell(curr_x, curr_y);
+
+        get_cell(new_x, new_y).set_entity(curr_cell.get_entity());
         get_cell(curr_x, curr_y).set_entity(nullptr);
-        get_cell(new_x, new_y).set_entity(robot);
 
         return true;
     }
     return false;
 }
 
-bool Field::move_robot(std::shared_ptr<Robot> robot, Cell& cell){
+bool Field::move_robot(Robot& robot, Cell& cell){
 
-    if(robot->decrease_energy(MOVE_COST)){
+    if(robot.decrease_energy(MOVE_COST)){
 
         size_t curr_x, curr_y;
-        if(!get_entity_position(robot, curr_x, curr_y)){
-            throw "Error: unable to find robot!\n";
-        }
+        get_entity_position(&robot, curr_x, curr_y);
 
-        get_cell(curr_x, curr_y).set_entity(nullptr);
-        cell.set_entity(robot);
+        Cell& curr_cell = get_cell(curr_x, curr_y);
+        cell.set_entity(curr_cell.get_entity());
+        curr_cell.set_entity(nullptr);
 
         return true;
     }
@@ -169,10 +168,11 @@ std::shared_ptr<Entity> Field::get_player() const{
     return nullptr;
 }
 
-bool Field::get_entity_position(const std::shared_ptr<Entity> entity, size_t& out_x, size_t& out_y) const{
+bool Field::get_entity_position(const Entity* entity, size_t& out_x, size_t& out_y) const{
     for(size_t y = 0; y < get_height(); y++){
         for(size_t x = 0; x < get_width(); x++){
-            if(grid[y][x].get_entity() == entity){
+            const std::shared_ptr<Entity> e = grid[y][x].get_entity();
+            if(e != nullptr && e.get() == entity){
                 out_x = x;
                 out_y = y;
                 return true;
@@ -182,7 +182,7 @@ bool Field::get_entity_position(const std::shared_ptr<Entity> entity, size_t& ou
     return false;
 }
 
-std::vector<std::shared_ptr<Entity>>& Field::get_entities(){
+const std::vector<std::shared_ptr<Entity>>& Field::get_entities(){
     return entities;
 }
 

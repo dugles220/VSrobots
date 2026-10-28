@@ -2,7 +2,8 @@
 #ifndef FACTORY_H
 #define FACTORY_H
 
-#include <Entity.h>
+#include "Entity.h"
+#include "TurnContext.h"
 
 class Factory : public Entity{
 
@@ -16,6 +17,9 @@ public:
     void set_performance(int performance);
 
     Factory(int health, int performance, char team);
+
+    void take_turn(TurnContext& context);
+
     ~Factory() = default;
 
 };
