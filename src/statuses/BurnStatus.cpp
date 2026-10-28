@@ -19,7 +19,10 @@ void BurnStatus::set_damage(size_t value){
 }
 
 void BurnStatus::execute_on_turn_start(std::shared_ptr<Robot> robot){
-    robot->take_damage(get_damage());
+
+    if(is_expired()) return;
+    robot->take_damage(damage);
+    turns--;
 }
 
 void BurnStatus::increase_turns(size_t value){
@@ -44,3 +47,5 @@ void BurnStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
         }
     }
 }
+
+bool BurnStatus::is_expired() const { return turns == 0; }
