@@ -6,15 +6,15 @@
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width)),
-    renderer(ConsoleRenderer()){
-        field.spawn_robot(
-            field_height / 2,
-            field_width / 2,
-            DEFAULT_HEALTH * 5,
-            DEFAULT_ENERGY * 5,
-            DEFAULT_DAMAGE * 5,
-            DEFAULT_SPEED * 3,
-            PLAYER_TEAM);
+    renderer(ConsoleRenderer()),
+    ai(AIController(field, field.spawn_robot(
+                           field_height / 2,
+                           field_width / 2,
+                           DEFAULT_HEALTH * 5,
+                           DEFAULT_ENERGY * 5,
+                           DEFAULT_DAMAGE * 5,
+                           DEFAULT_SPEED * 3,
+                           PLAYER_TEAM))){
         field.init_demo_level();
     }
 
@@ -62,12 +62,10 @@ void GameCycle::process_enemies(std::shared_ptr<Robot> player){
             continue;
         }
 
-        if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
-            process_robot(robot, player);
-        }
-        else if(std::shared_ptr<Factory> factory = std::dynamic_pointer_cast<Factory>(entity)){
-            process_factory(factory);
-        }
+        TurnContext context = {field,get_turn(), ai, player};
+
+        entity->take_turn(context);
+
     }
 }
 
@@ -99,7 +97,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
     size_t px, py;
 
-    field.get_entity_position(player, px, py);
+    field.get_entity_position(player.get(), px, py);
 
     while(available_moves > 0){
 
@@ -160,7 +158,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
             int move_cost = cell.get_pass_difficulty();
 
             if(move_cost <= available_moves){
-                if(field.move_robot(player, cell)){
+                if(field.move_robot(*player, cell)){
                     px = new_x;
                     py = new_y;
                     available_moves -= move_cost;
@@ -195,7 +193,7 @@ bool GameCycle::is_game_over(std::shared_ptr<Robot> player){
 void GameCycle::update_visibility(std::shared_ptr<Robot> player){
 
     size_t u_px, u_py; // unsigned координаты
-    field.get_entity_position(player, u_px, u_py); 
+    field.get_entity_position(player.get(), u_px, u_py); 
 
     int px = (int)u_px;
     int py = (int)u_py;
@@ -219,101 +217,6 @@ void GameCycle::update_visibility(std::shared_ptr<Robot> player){
             }
         }
     }
-
-}
-
-void GameCycle::process_robot(std::shared_ptr<Robot> robot, std::shared_ptr<Robot> player){
-
-    size_t rx, ry;
-    field.get_entity_position(robot, rx, ry);
-    size_t px, py;
-    field.get_entity_position(player, px, py);
-
-    int available_moves = robot->get_speed();
-
-    while(available_moves > 0){
-
-        size_t new_x = rx, new_y = ry;
-        
-        if(rx < px) new_x++;
-        else if(rx > px) new_x--;
-        else if(ry < py) new_y++;
-        else if(ry > py) new_y--;
-
-        Cell& cell = field.get_cell(new_x, new_y);
-
-        if(cell.get_passability() == false){
-            break;
-        }
-
-        if(cell.is_occupied()){
-            robot->interact(cell.get_entity());
-            available_moves = 0;
-            break;
-        }
-        
-        int move_cost = cell.get_pass_difficulty();
-
-        if(move_cost <= available_moves){
-
-            if(field.move_robot(robot, cell)){
-                rx = new_x;
-                ry = new_y;
-                available_moves -= move_cost;
-            } else{
-                available_moves = 0; 
-                continue;
-            }
-        } else {
-            renderer.render(field);
-            break;
-        }
-        renderer.render(field);
-        usleep(600000);
-
-    }
-}
-
-void GameCycle::process_factory(std::shared_ptr<Factory> factory){
-
-    if(turn == 0 || (int)turn % factory->get_performance() != 0) return;
-
-    size_t fx, fy; // factory_x, factory_y
-    field.get_entity_position(factory, fx, fy);
-
-    size_t ry = fy - 1; // robox_y
-    size_t rx = fx - 1; // robot_x
-
-    bool space_available = false;
-
-    for(; ry < ry + 3; ry++){
-        for(; rx < fx + 3; rx++){
-
-            if(!field.are_coord_valid(rx, ry)) continue;
-
-            Cell& cell = field.get_cell(rx, ry);
-
-            if(!cell.is_occupied() && cell.get_passability()){
-                space_available = true;
-                break;
-            }
-        }
-        if(space_available) break;
-    }
-
-    if(space_available){
-        field.spawn_robot(
-            rx,
-            ry,
-            DEFAULT_HEALTH,
-            DEFAULT_ENERGY, 
-            DEFAULT_DAMAGE, 
-            DEFAULT_SPEED,
-            ENEMY_TEAM
-        ); 
-    }
-
-    renderer.render(field);
 
 }
 

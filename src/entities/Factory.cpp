@@ -1,4 +1,5 @@
 #include "Factory.h"
+#include "AIController.h"
 
 #include <stdexcept>
 
@@ -12,3 +13,7 @@ Factory::Factory(int health, int performance, char team):
 }
 
 int Factory::get_performance() const{ return performance; }
+
+void Factory::take_turn(TurnContext& context){
+    context.ai.process_factory(this, context);
+}

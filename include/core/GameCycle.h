@@ -3,6 +3,7 @@
 
 #include "Field.h"
 #include "ConsoleRenderer.h"
+#include "AIController.h"
 
 #include "BurnStatus.h"
 #include "ShieldStatus.h"
@@ -18,6 +19,7 @@ private:
     Field field;
     ConsoleRenderer renderer;
     size_t turn = 0;
+    AIController ai;
 
 public:
 
