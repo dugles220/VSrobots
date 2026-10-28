@@ -31,6 +31,7 @@ void GameCycle::run(){
 
     while(!is_game_over(player)){
 
+        process_start_turn();
         process_player_input(player);
         process_enemies(player);
         process_end_turn();
@@ -74,6 +75,10 @@ void GameCycle::process_end_turn(){
 
     for(const auto& entity :field.get_entities()){
         if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
+
+            for(const auto& status : robot->get_statuses()){
+                status->execute_on_turn_end(robot);
+            }
 
             if(robot->get_team() == PLAYER_TEAM){ 
                 robot->increase_energy(P_ENERGY_INCREASE);
@@ -313,3 +318,19 @@ void GameCycle::process_factory(std::shared_ptr<Factory> factory){
 }
 
 size_t GameCycle::get_turn() const{ return turn; }
+
+void GameCycle::process_start_turn(){
+    for(const auto& entity : field.get_entities()){
+
+        if(std::shared_ptr<Robot> robot = std::dynamic_pointer_cast<Robot>(entity)){
+
+            robot->update_statuses();
+
+            for(const auto& status : robot->get_statuses()){
+
+                status->execute_on_turn_start(robot);
+
+            }
+        }
+    }   
+}

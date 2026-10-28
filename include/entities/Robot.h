@@ -3,6 +3,7 @@
 #define ROBOT_H
 
 #include "Entity.h"
+#include "Status.h"
 
 #define MAX_SPEED 5
 #define VISIBILITY_RADIUS 3
@@ -17,6 +18,8 @@ private:
 
     int max_energy;
     int curr_energy;
+
+    std::vector<std::unique_ptr<Status>> statuses;
 
     double exp;
 
@@ -45,6 +48,11 @@ public:
     double get_exp() const;
     void set_exp(double value);
     void add_exp(double to_add);
+
+    void take_damage(int value);
+
+    std::vector<std::unique_ptr<Status>>& get_statuses();
+    void update_statuses();
 
 };
 

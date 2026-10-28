@@ -4,6 +4,11 @@
 #include "Field.h"
 #include "ConsoleRenderer.h"
 
+#include "BurnStatus.h"
+#include "ShieldStatus.h"
+#include "OverloadStatus.h"
+#include "SlowdownStatus.h"
+
 #define DEFAULT_SPEED 1
 #define DEFAULT_HEALTH 100
 #define DEFAULT_DAMAGE 10
@@ -32,6 +37,7 @@ public:
     void process_robot(std::shared_ptr<Robot> robot, std::shared_ptr<Robot> player);
     void process_factory(std::shared_ptr<Factory> factory);
     void process_enemies(std::shared_ptr<Robot> player);
+    void process_start_turn();
     void process_end_turn();
     void update_visibility(std::shared_ptr<Robot> player);
 
