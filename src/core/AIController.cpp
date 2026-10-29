@@ -72,7 +72,7 @@ void AIController::process_factory(Factory* f, TurnContext& context){
 
     bool space_available = false;
 
-    for(; ry < ry + 3; ry++){
+    for(; ry < fy + 3; ry++){
         for(; rx < fx + 3; rx++){
 
             if(!field.are_coord_valid(rx, ry)) continue;
