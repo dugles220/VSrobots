@@ -71,7 +71,7 @@ std::shared_ptr<Factory> Field::spawn_factory(size_t x, size_t y,
 
     for(size_t i = y; i < y + 2; i++){
         for(size_t j = x; j < x + 2; j++){
-            get_cell(i, j).set_entity(new_factory); 
+            get_cell(j, i).set_entity(new_factory); 
         }
     }
 

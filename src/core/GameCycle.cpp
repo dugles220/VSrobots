@@ -8,8 +8,8 @@ GameCycle::GameCycle(size_t field_height, size_t field_width):
     field(Field(field_height, field_width)),
     renderer(ConsoleRenderer()),
     ai(AIController(field, field.spawn_robot(
-                           field_height / 2,
                            field_width / 2,
+                           field_height / 2,
                            DEFAULT_HEALTH * 5,
                            DEFAULT_ENERGY * 5,
                            DEFAULT_DAMAGE * 5,
