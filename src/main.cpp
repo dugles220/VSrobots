@@ -4,7 +4,7 @@
 
 int main(){
 
-    GameCycle game = GameCycle(10, 10);
+    GameCycle game = GameCycle(20, 40);
 
     game.run();
 

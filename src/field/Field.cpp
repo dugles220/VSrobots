@@ -186,31 +186,116 @@ const std::vector<std::shared_ptr<Entity>>& Field::get_entities(){
     return entities;
 }
 
-void Field::init_demo_level() {
-    // стены
-    grid[2][2].set_passability(false);
+void Field::init_debug_level() {
+    grid[3][2].set_passability(false);
     grid[3][3].set_passability(false);
-    grid[2][3].set_passability(false);
-    grid[2][4].set_passability(false);
+    grid[3][4].set_passability(false);
 
-    grid[6][7].set_passability(false);
-    grid[5][7].set_passability(false);
-    grid[7][7].set_passability(false);
-    grid[7][8].set_passability(false);
-    grid[8][7].set_passability(false);
+    grid[7][6].set_passability(false);
+    grid[8][6].set_passability(false);
 
-    // сложнопроходимые клетки
-    grid[6][2].set_pass_difficulty(3);
-    grid[7][2].set_pass_difficulty(3);
+    grid[6][2].set_pass_difficulty(2);
     grid[6][3].set_pass_difficulty(3);
-    grid[5][2].set_pass_difficulty(2);
-    grid[5][3].set_pass_difficulty(2);
+    grid[6][4].set_pass_difficulty(2);
 
-    //враги
-    spawn_robot(1, 1, 50, 30, 5, 1, 'E');
-    spawn_robot(6, 9, 60, 40, 5, 2, 'E');
-    spawn_robot(1, 9, 30, 50, 5, 3, 'E');
-    spawn_robot(9, 3, 10, 40, 20, 1, 'E');
+    grid[3][7].set_pass_difficulty(3);
+    grid[4][7].set_pass_difficulty(2);
 
-    spawn_factory(7, 2, 200, 8, 'E');
+    spawn_robot(1, 1, 50, 30, 10, 1, 'E');
+    spawn_robot(9, 2, 40, 20, 15, 2, 'E');
+    spawn_robot(9, 7, 70, 40, 20, 3, 'E');
+
+    spawn_factory(10, 4, 150, 5, 'E');
+}
+
+void Field::init_demo_level() {
+    for (int y = 2; y <= 7; ++y) {
+        if (y != 5) {
+            grid[y][7].set_passability(false);
+        }
+    }
+
+    for (int x = 15; x <= 18; ++x) {
+        grid[4][x].set_passability(false);
+        grid[8][x].set_passability(false);
+    }
+
+    for (int y = 4; y <= 8; ++y) {
+        if (y != 6) {
+            grid[y][14].set_passability(false);
+            grid[y][19].set_passability(false);
+        }
+    }
+
+    for (int y = 2; y <= 5; ++y) {
+        grid[y][27].set_passability(false);
+    }
+
+    for (int x = 29; x <= 33; ++x) {
+        grid[9][x].set_passability(false);
+    }
+
+    for (int y = 12; y <= 14; ++y) {
+        grid[y][30].set_passability(false);
+    }
+
+    for (int x = 4; x <= 9; ++x) {
+        grid[15][x].set_passability(false);
+    }
+
+    for (int y = 15; y <= 18; ++y) {
+        grid[y][9].set_passability(false);
+    }
+
+    for (int x = 2; x <= 5; ++x) {
+        for (int y = 9; y <= 12; ++y) {
+            grid[y][x].set_pass_difficulty(2);
+        }
+    }
+
+    grid[10][3].set_pass_difficulty(3);
+    grid[10][4].set_pass_difficulty(3);
+    grid[11][4].set_pass_difficulty(3);
+
+    for (int x = 12; x <= 17; ++x) {
+        for (int y = 11; y <= 14; ++y) {
+            grid[y][x].set_pass_difficulty(2);
+        }
+    }
+
+    for (int x = 13; x <= 16; ++x) {
+        grid[12][x].set_pass_difficulty(3);
+    }
+
+    for (int x = 34; x <= 37; ++x) {
+        for (int y = 3; y <= 7; ++y) {
+            grid[y][x].set_pass_difficulty(2);
+        }
+    }
+
+    grid[5][35].set_pass_difficulty(3);
+    grid[5][36].set_pass_difficulty(3);
+    grid[6][36].set_pass_difficulty(3);
+
+    // враги - быстрые и слабые
+    spawn_robot(3, 2, 35, 25, 10, 3, 'E');
+    spawn_robot(5, 5, 40, 30, 12, 2, 'E');
+
+    // враги -  сбалансированные
+    spawn_robot(11, 2, 60, 40, 15, 2, 'E');
+    spawn_robot(12, 6, 70, 50, 20, 2, 'E');
+    spawn_robot(22, 3, 55, 35, 18, 2, 'E');
+
+    // враги - медленные и сильные
+    spawn_robot(23, 15, 100, 60, 30, 1, 'E');
+    spawn_robot(32, 16, 120, 50, 35, 1, 'E');
+
+    // быстрые противники
+    spawn_robot(36, 10, 45, 30, 12, 3, 'E');
+    spawn_robot(37, 17, 50, 35, 15, 3, 'E');
+
+    // фабрики
+    spawn_factory(20, 2, 250, 4, 'E');
+    spawn_factory(36, 8, 300, 6, 'E');
+    spawn_factory(25, 17, 200, 3, 'E');
 }

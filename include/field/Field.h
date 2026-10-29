@@ -9,7 +9,7 @@
 #include <memory>
 
 #define MINIMAL_SIZE 3
-#define MAX_SIZE 20
+#define MAX_SIZE 60
 
 class Field{
 public:
@@ -40,6 +40,7 @@ public:
     bool are_coord_valid(size_t x, size_t y) const;
 
     void init_demo_level();
+    void init_debug_level();
 
 private:
 
