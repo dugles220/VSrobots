@@ -24,7 +24,8 @@ public:
     const Cell& get_cell(size_t x, size_t y) const;
 
     std::shared_ptr<Entity> get_player() const;
-    bool get_entity_position(const Entity* entity, size_t& x, size_t& y) const;
+    bool get_entity_pos(const Entity* entity, size_t& x, size_t& y) const;
+    bool get_cell_pos(const Cell* cell, int& out_x, int& out_y) const;
     const std::vector<std::shared_ptr<Entity>>& get_entities();
 
     std::shared_ptr<Robot> spawn_robot(size_t x, size_t y,

@@ -4,6 +4,7 @@
 
 #include "Entity.h"
 #include "Status.h"
+#include "Ability.h"
 #include "GameConstants.h"
 #include "TurnContext.h"
 
@@ -21,6 +22,7 @@ private:
     int curr_energy;
 
     std::vector<std::unique_ptr<Status>> statuses;
+    std::vector<std::unique_ptr<Ability>> abilities;
 
     double exp;
 
@@ -31,6 +33,8 @@ public:
 
     void take_turn(TurnContext& context);
     bool interact(std::shared_ptr<Entity> entity);
+    bool attack(Entity& target);
+    bool heal(Entity& target);
     void level_up();
 
     void increase_energy(int value);
@@ -54,7 +58,12 @@ public:
     void take_damage(int value);
 
     const std::vector<std::unique_ptr<Status>>& get_statuses();
+    void add_status(std::unique_ptr<Status> status);
     void update_statuses();
+
+    const std::vector<std::unique_ptr<Ability>>& get_abilities();
+    void add_ability(std::unique_ptr<Ability> ability);
+    
 
 };
 

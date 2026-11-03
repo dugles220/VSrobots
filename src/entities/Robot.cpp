@@ -19,15 +19,28 @@ Robot::Robot(int health, int energy, int damage, int speed, char team):
 }
 
 bool Robot::interact(std::shared_ptr<Entity> entity){
+ 
+    if(get_team() != entity->get_team()){
+        return attack(*entity);
+    } else {
+        return heal(*entity);
+    }
+}
+
+bool Robot::heal(Entity& target){
+
+    if(decrease_energy(HEAL_COST) == true){
+        target.take_heal(get_damage());
+        return true;
+    }
+
+    return false;
+}
+
+bool Robot::attack(Entity& target){
 
     if(decrease_energy(ATTACK_COST) == true){
-
-        if(get_team() == entity->get_team()){
-            entity->take_heal(get_damage());
-        } else {
-            entity->take_damage(get_damage());
-        }
-        
+        target.take_damage(get_damage());
         return true;
     }
 
@@ -132,3 +145,19 @@ void Robot::take_turn(TurnContext& context){
 }
 
 const std::vector<std::unique_ptr<Status>>& Robot::get_statuses(){ return statuses; }
+
+void Robot::add_status(std::unique_ptr<Status> status){
+    statuses.push_back(std::move(status));
+}
+
+const std::vector<std::unique_ptr<Ability>>& Robot::get_abilities(){ return abilities; }
+
+void Robot::add_ability(std::unique_ptr<Ability> ability){
+    for(const auto& a : get_abilities()){
+        if(a->get_name() == ability->get_name()){
+            a->upgrade();
+            return;
+        }
+    }
+    abilities.push_back(std::move(ability));
+}

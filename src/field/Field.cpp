@@ -82,7 +82,7 @@ void Field::delete_entity(std::shared_ptr<Entity> entity){
 
     size_t x, y;
 
-    if(get_entity_position(entity.get(), x, y)){
+    if(get_entity_pos(entity.get(), x, y)){
         if(std::dynamic_pointer_cast<Factory>(entity)){
             for(size_t i = y; i < y + 2; i++){
                 for(size_t j = x; j < x + 2; j++){
@@ -116,7 +116,7 @@ bool Field::move_robot(Robot& robot, size_t new_x, size_t new_y){
     else if(robot.decrease_energy(MOVE_COST)){
 
         size_t curr_x, curr_y;
-        if(!get_entity_position(&robot, curr_x, curr_y)){
+        if(!get_entity_pos(&robot, curr_x, curr_y)){
             throw "Error: unable to find entity\n";
         }
 
@@ -135,7 +135,7 @@ bool Field::move_robot(Robot& robot, Cell& cell){
     if(robot.decrease_energy(MOVE_COST)){
 
         size_t curr_x, curr_y;
-        get_entity_position(&robot, curr_x, curr_y);
+        get_entity_pos(&robot, curr_x, curr_y);
 
         Cell& curr_cell = get_cell(curr_x, curr_y);
         cell.set_entity(curr_cell.get_entity());
@@ -168,7 +168,7 @@ std::shared_ptr<Entity> Field::get_player() const{
     return nullptr;
 }
 
-bool Field::get_entity_position(const Entity* entity, size_t& out_x, size_t& out_y) const{
+bool Field::get_entity_pos(const Entity* entity, size_t& out_x, size_t& out_y) const{
     for(size_t y = 0; y < get_height(); y++){
         for(size_t x = 0; x < get_width(); x++){
             const std::shared_ptr<Entity> e = grid[y][x].get_entity();
@@ -184,6 +184,19 @@ bool Field::get_entity_position(const Entity* entity, size_t& out_x, size_t& out
 
 const std::vector<std::shared_ptr<Entity>>& Field::get_entities(){
     return entities;
+}
+
+bool Field::get_cell_pos(const Cell* cell, int& out_x, int& out_y) const{
+    for(size_t y = 0; y < get_height(); y++){
+        for(size_t x = 0; x < get_width(); x++){
+            if(&get_cell(x, y) == cell){
+                out_x = x;
+                out_y = y;
+                return true; 
+            }
+        }
+    }
+    return false;
 }
 
 void Field::init_debug_level() {

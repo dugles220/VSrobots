@@ -12,7 +12,7 @@ struct TurnContext {
     Field& field;
     size_t turn;
     AIController &ai;
-    std::shared_ptr<Robot> player;
+    Robot& player;
 };
 
 #endif

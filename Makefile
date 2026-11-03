@@ -6,7 +6,8 @@ FLAGS = -Wall -Wextra -Werror -std=c++20 -g \
 		-Iinclude/entities \
 		-Iinclude/field \
 		-Iinclude/render \
-		-Iinclude/statuses
+		-Iinclude/statuses \
+		-Iinclude/abilities
 SRC_DIR = src
 OBJ_DIR = obj
 SOURCES = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp)
