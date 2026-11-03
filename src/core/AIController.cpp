@@ -13,9 +13,9 @@ AIController::AIController(Field& field, std::shared_ptr<Robot> player):
 void AIController::process_robot(Robot* r, TurnContext& context){
 
     size_t rx, ry;
-    field.get_entity_position(r, rx, ry);
+    field.get_entity_pos(r, rx, ry);
     size_t px, py;
-    field.get_entity_position(context.player.get(), px, py);
+    field.get_entity_pos(&context.player, px, py);
 
     int available_moves = r->get_speed();
 
@@ -65,7 +65,7 @@ void AIController::process_factory(Factory* f, TurnContext& context){
     if(turn == 0 || (int)turn % f->get_performance() != 0) return;
 
     size_t fx, fy; // factory_x, factory_y
-    field.get_entity_position(f, fx, fy);
+    field.get_entity_pos(f, fx, fy);
 
     size_t ry = fy - 1; // robox_y
     size_t rx = fx - 1; // robot_x

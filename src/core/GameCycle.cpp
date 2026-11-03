@@ -99,7 +99,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
     size_t px, py;
 
-    field.get_entity_position(player.get(), px, py);
+    field.get_entity_pos(player.get(), px, py);
 
     while(available_moves > 0){
 
@@ -200,7 +200,7 @@ bool GameCycle::is_game_over(std::shared_ptr<Robot> player){
 void GameCycle::update_visibility(std::shared_ptr<Robot> player){
 
     size_t u_px, u_py; // unsigned координаты
-    field.get_entity_position(player.get(), u_px, u_py); 
+    field.get_entity_pos(player.get(), u_px, u_py); 
 
     int px = (int)u_px;
     int py = (int)u_py;
