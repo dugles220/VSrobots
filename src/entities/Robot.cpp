@@ -132,3 +132,15 @@ void Robot::take_turn(TurnContext& context){
 }
 
 const std::vector<std::unique_ptr<Status>>& Robot::get_statuses(){ return statuses; }
+
+const std::vector<std::unique_ptr<Ability>>& Robot::get_abilities(){ return abilities; }
+
+void Robot::add_ability(std::unique_ptr<Ability> ability){
+    for(const auto& a : get_abilities()){
+        if(a->get_name() == ability->get_name()){
+            a->upgrade();
+            return;
+        }
+    }
+    abilities.push_back(std::move(ability));
+}

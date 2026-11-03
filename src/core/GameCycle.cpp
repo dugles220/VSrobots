@@ -1,8 +1,10 @@
 #include "GameCycle.h"
 
 #include <iostream>
+#include <format>
 #include <string>
 #include <unistd.h>
+#include <limits>
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width)),
@@ -14,17 +16,17 @@ GameCycle::GameCycle(size_t field_height, size_t field_width):
                            DEFAULT_ENERGY * 5,
                            DEFAULT_DAMAGE * 5,
                            DEFAULT_SPEED * 3,
-                           PLAYER_TEAM))){
-        field.init_demo_level();
-    }
+                           PLAYER_TEAM))),
+    ac(AbilitiesCatalog()){
 
 void GameCycle::run(){
-
 
     std::shared_ptr<Robot> player = std::dynamic_pointer_cast<Robot>(field.get_player());
     if(player == nullptr){
         throw "Player isn't found!\n";
     }
+
+    process_ability_pick(*player);
 
     update_visibility(player);
     renderer.render(field);
@@ -91,7 +93,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
     char input = BAD_INPUT;
 
-    std::string good_symbs = "wasdnWASDN";
+    std::string good_symbs = "wasdnbWASDNB";
 
     int available_moves = player->get_speed();
 
@@ -129,6 +131,11 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
                 break;
             case 'n':
                 available_moves = 0;
+                continue;
+            case 'b':
+                process_ability_use(*player);
+                field.get_entity_pos(player.get(), px, py);
+                input = BAD_INPUT;
                 continue;
         }
         
@@ -236,4 +243,149 @@ void GameCycle::process_start_turn(){
             }
         }
     }   
+}
+
+void GameCycle::print_abilities(std::string msg,
+                                const std::vector<std::unique_ptr<Ability>>& abilities) const {
+
+    std::cout << msg << std::endl;
+
+    for(size_t i = 0; i < abilities.size(); i++){
+        std::cout << std::format("{:>5}. {}", i + 1, abilities[i]->get_name());
+        std::cout << std::endl;
+    }
+
+}
+
+void GameCycle::process_ability_pick(Robot& player){
+
+    bool is_picked = false;
+    std::string msg = "You're able to choose one of the following abilities:";
+ 
+    while(!is_picked){
+
+        const auto& abs = ac.get_catalog();
+
+        print_abilities(msg, abs);
+        std::cout << "Enter the ability number:" << std::endl;
+
+        int num = -1;
+
+        if (!(std::cin >> num)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("clear");
+            std::cout << "Invalid input. Enter a number." << std::endl;
+            continue;
+        }
+
+        if (num < 1 || num > (int)ac.get_catalog().size()) {
+            system("clear");
+            std::cout << "Incorrect number. Try again." << std::endl;
+            continue;
+        }
+
+        player.add_ability(ac.get_catalog()[num - 1]->clone());
+        is_picked = true;
+        break;
+    }
+}
+
+bool GameCycle::process_ability_use(Robot& player){
+
+    const auto& abilities = player.get_abilities();
+
+    std::string msg = "Available abilities:";
+    print_abilities(msg, abilities);
+
+    bool is_picked = false;
+
+    int number = 0;
+   
+    while(!is_picked){
+        if (!(std::cin >> number)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Enter a number: ";
+            continue;
+        }
+
+        if(number - 1 < 0 || number > (int)abilities.size()){
+            std::cout << "Incorrect number. Try again." << std::endl;
+            continue;
+        }
+
+        number--;
+        is_picked = true;
+        break;
+    }
+
+    const auto& ability = abilities[number];
+
+    TurnContext context = {field, get_turn(), ai, player};
+    AbilityTarget target;
+
+    if(ability->is_cell_required() || ability->is_target_required()){
+
+        Cell& picked_cell = process_cell_pick(player);
+        target = {picked_cell.get_entity().get(), &picked_cell};
+
+    } else target = {}; 
+
+    return ability->use(player, context, target);
+}
+
+Cell& GameCycle::process_cell_pick(Robot& player) {
+
+    size_t cx, cy;
+    field.get_entity_pos(&player, cx, cy);
+
+    bool is_picked = false;
+
+    std::string good_symbs = "wasdyWASDY";
+    char input = BAD_INPUT;
+
+    std::cout << "Choose cell. Use WASD and Y to confirm.\n";
+
+    while(!is_picked){
+
+        while(input == BAD_INPUT){
+            std::cin >> input;
+            if(good_symbs.find(input) == std::string::npos){ input = BAD_INPUT; } 
+        }
+
+        input = tolower(input);
+
+        size_t new_x = cx;
+        size_t new_y = cy;
+
+        switch (input){
+            case 's':
+                new_y += 1;
+                break;
+            case 'a':
+                new_x -= 1;
+                break;
+            case 'w':
+                new_y -= 1;
+                break;
+            case 'd':
+                new_x += 1; 
+                break;
+            case 'y':
+                is_picked = true;
+                break;
+        }
+        
+        if(!field.are_coord_valid(new_x, new_y)){
+            input = BAD_INPUT; 
+            continue;
+        } else{
+            cx = new_x;
+            cy = new_y;
+            input = BAD_INPUT;
+        }
+    }
+
+    return field.get_cell(cx, cy);
 }

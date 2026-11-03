@@ -4,6 +4,7 @@
 
 #include "Entity.h"
 #include "Status.h"
+#include "Ability.h"
 #include "GameConstants.h"
 #include "TurnContext.h"
 
@@ -21,6 +22,7 @@ private:
     int curr_energy;
 
     std::vector<std::unique_ptr<Status>> statuses;
+    std::vector<std::unique_ptr<Ability>> abilities;
 
     double exp;
 
@@ -55,6 +57,10 @@ public:
 
     const std::vector<std::unique_ptr<Status>>& get_statuses();
     void update_statuses();
+
+    const std::vector<std::unique_ptr<Ability>>& get_abilities();
+    void add_ability(std::unique_ptr<Ability> ability);
+    
 
 };
 

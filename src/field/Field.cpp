@@ -186,6 +186,19 @@ const std::vector<std::shared_ptr<Entity>>& Field::get_entities(){
     return entities;
 }
 
+bool Field::get_cell_pos(const Cell* cell, int& out_x, int& out_y) const{
+    for(size_t y = 0; y < get_height(); y++){
+        for(size_t x = 0; x < get_width(); x++){
+            if(&get_cell(x, y) == cell){
+                out_x = x;
+                out_y = y;
+                return true; 
+            }
+        }
+    }
+    return false;
+}
+
 void Field::init_debug_level() {
     grid[3][2].set_passability(false);
     grid[3][3].set_passability(false);
