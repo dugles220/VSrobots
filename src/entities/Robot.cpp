@@ -146,6 +146,10 @@ void Robot::take_turn(TurnContext& context){
 
 const std::vector<std::unique_ptr<Status>>& Robot::get_statuses(){ return statuses; }
 
+void Robot::add_status(std::unique_ptr<Status> status){
+    statuses.push_back(std::move(status));
+}
+
 const std::vector<std::unique_ptr<Ability>>& Robot::get_abilities(){ return abilities; }
 
 void Robot::add_ability(std::unique_ptr<Ability> ability){

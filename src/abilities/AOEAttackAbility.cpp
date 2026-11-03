@@ -1,5 +1,6 @@
 #include "AOEAttackAbility.h"
 #include "Field.h"
+#include "OverloadStatus.h"
 
 AOEAttackAbility::AOEAttackAbility():
                   BaseAbility(DEFAULT_AOE_ATTACK_COST, AOE_ATTACK_ABILITY_NAME),
@@ -34,7 +35,12 @@ bool AOEAttackAbility::use(Robot& robot, TurnContext& context, AbilityTarget&){
 
                 std::shared_ptr<Entity> e = field.get_cell(x, y).get_entity();
 
-                if (e != nullptr && e.get() != &robot) e->take_damage(robot.get_damage());
+                if (e != nullptr && e.get() != &robot){
+                    e->take_damage(robot.get_damage());
+                    if(const auto& robot = std::dynamic_pointer_cast<Robot>(e)){
+                        robot->add_status(std::make_unique<OverloadStatus>());
+                    }
+                }
             }
         }
     }

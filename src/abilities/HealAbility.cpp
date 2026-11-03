@@ -1,5 +1,6 @@
 #include "HealAbility.h"
 #include "Robot.h"
+#include "ShieldStatus.h"
 
 HealAbility::HealAbility():
              BaseAbility(DEFAULT_HEAL_COST, HEAL_ABILITY_NAME),
@@ -15,7 +16,15 @@ HealAbility::HealAbility(int heal_value, int energy_cost) :
 bool HealAbility::use(Robot& robot, TurnContext&, AbilityTarget&){
 
     if(robot.decrease_energy(get_energy_cost())){
-        robot.take_heal(heal_value);
+
+        int to_heal = robot.get_max_health() - robot.get_curr_health();
+
+        if(to_heal < heal_value){
+            robot.set_curr_health(robot.get_max_health());
+            robot.add_status(std::make_unique<ShieldStatus>(heal_value - to_heal));
+        } else {
+            robot.take_heal(heal_value);
+        }
         return true;
     }
 

@@ -58,6 +58,7 @@ public:
     void take_damage(int value);
 
     const std::vector<std::unique_ptr<Status>>& get_statuses();
+    void add_status(std::unique_ptr<Status> status);
     void update_statuses();
 
     const std::vector<std::unique_ptr<Ability>>& get_abilities();

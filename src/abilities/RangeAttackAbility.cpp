@@ -1,6 +1,7 @@
 #include "RangeAttackAbility.h"
 #include "Robot.h"
 #include "Field.h"
+#include "BurnStatus.h"
 
 #include <cmath>
 
@@ -34,7 +35,14 @@ bool RangeAttackAbility::use(Robot& robot, TurnContext& context, AbilityTarget& 
         dy = abs((int)ry - (int)ty);
 
         if(pow(dx, 2) + pow(dy, 2) <= pow(radius, 2)){
-            return robot.attack(*target.entity);
+            bool is_success = robot.attack(*target.entity);
+            if(is_success){
+                if(const auto& robot = dynamic_cast<Robot*>(target.entity)){
+                    robot->add_status(std::make_unique<BurnStatus>());
+                }
+            }
+
+            return is_success;
         }
     }
 
