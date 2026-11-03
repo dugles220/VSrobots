@@ -32,9 +32,7 @@ public:
     bool is_game_over(std::shared_ptr<Robot> player);
 
     void process_player_input(std::shared_ptr<Robot> player);
-    void process_robot(std::shared_ptr<Robot> robot, std::shared_ptr<Robot> player);
-    void process_factory(std::shared_ptr<Factory> factory);
-    void process_enemies(std::shared_ptr<Robot> player);
+    void process_enemies(Robot& player);
     void process_start_turn();
     void process_end_turn();
     void update_visibility(std::shared_ptr<Robot> player);

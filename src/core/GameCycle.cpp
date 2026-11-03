@@ -35,7 +35,7 @@ void GameCycle::run(){
 
         process_start_turn();
         process_player_input(player);
-        process_enemies(player);
+        process_enemies(*player);
         process_end_turn();
 
         turn++;
@@ -52,7 +52,7 @@ void GameCycle::run(){
     }
 }
 
-void GameCycle::process_enemies(std::shared_ptr<Robot> player){
+void GameCycle::process_enemies(Robot& player){
 
     for(const auto& entity : field.get_entities()){
 
@@ -64,7 +64,7 @@ void GameCycle::process_enemies(std::shared_ptr<Robot> player){
             continue;
         }
 
-        TurnContext context = {field,get_turn(), ai, player};
+        TurnContext context = {field, get_turn(), ai, player};
 
         entity->take_turn(context);
 
