@@ -11,6 +11,7 @@
 #define VISIBILITY_RADIUS 3
 #define MOVE_COST 5
 #define ATTACK_COST 10
+#define HEAL_COST 10
 
 #define ENEMY_TEAM 'E'
 #define PLAYER_TEAM 'P'

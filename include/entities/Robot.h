@@ -33,6 +33,8 @@ public:
 
     void take_turn(TurnContext& context);
     bool interact(std::shared_ptr<Entity> entity);
+    bool attack(Entity& target);
+    bool heal(Entity& target);
     void level_up();
 
     void increase_energy(int value);
