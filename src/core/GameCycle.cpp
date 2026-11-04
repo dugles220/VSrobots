@@ -7,7 +7,7 @@
 #include <limits>
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
-    field(Field(field_height, field_width)),
+    field(Field(field_height, field_width, true)),
     renderer(ConsoleRenderer()),
     ai(AIController(field, field.spawn_robot(
                            field_width / 2,
