@@ -47,3 +47,13 @@ bool AOEAttackAbility::use(Robot& robot, TurnContext& context, AbilityTarget&){
 
     return true;
 }
+
+void AOEAttackAbility::upgrade(){
+
+    int upgraded_radius = radius + AOE_UPGRAGE_SIZE;
+    
+    if(upgraded_radius > MAX_AOE_ATTACK_RADIUS) radius = MAX_AOE_ATTACK_RADIUS;
+
+    radius = upgraded_radius;
+
+}

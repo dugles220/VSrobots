@@ -6,6 +6,8 @@
 #define MIN_TELEPORT_RADIUS 2
 #define DEFAULT_TELEPORT_RADIUS 5
 #define DEFAULT_TELEPORT_COST 50
+#define MIN_TELEPORT_COST 10
+#define TELEPORT_UPGRADE_SIZE 10
 
 class TeleportAbility : public BaseAbility {
 private:
@@ -21,4 +23,5 @@ public:
         return std::make_unique<TeleportAbility>(*this);
     }
     bool is_cell_required() const;
+    void upgrade();
 };

@@ -7,11 +7,13 @@
 
 RangeAttackAbility::RangeAttackAbility():
                     BaseAbility(DEFAULT_RANGE_ATTACK_COST, RANGE_ATTACK_ABILITY_NAME),
-                    radius(DEFAULT_RANGE_ATTACK_RADIUS) {}
+                    radius(DEFAULT_RANGE_ATTACK_RADIUS),
+                    ability_damage(0){}
 
 RangeAttackAbility::RangeAttackAbility(int radius, int energy_cost) :
                     BaseAbility(energy_cost, RANGE_ATTACK_ABILITY_NAME),
-                    radius(radius){
+                    radius(radius),
+                    ability_damage(0){
     if(radius < DEFAULT_RANGE_ATTACK_RADIUS) radius = DEFAULT_RANGE_ATTACK_RADIUS;
 }
 
@@ -50,3 +52,13 @@ bool RangeAttackAbility::use(Robot& robot, TurnContext& context, AbilityTarget& 
 }
 
 bool RangeAttackAbility::is_target_required() const { return true; }
+
+void RangeAttackAbility::upgrade(){
+
+    ability_damage += RANGE_ATTACK_UPGRADE_SIZE;
+
+    if(ability_damage > MAX_RANGE_ATTACK_DAMAGE){
+        ability_damage = MAX_RANGE_ATTACK_DAMAGE;
+    }
+
+}

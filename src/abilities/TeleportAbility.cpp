@@ -16,7 +16,9 @@ TeleportAbility::TeleportAbility(int radius, int energy_cost) :
 
 bool TeleportAbility::use(Robot& robot, TurnContext& context, AbilityTarget& target){
 
-    if(target.cell->is_occupied() == true) return false;
+    if(robot.decrease_energy(get_energy_cost()) ||
+       target.cell->is_occupied() ||
+       !target.cell->get_passability()) return false;
     else{
        
         size_t rx, ry;
@@ -38,3 +40,15 @@ bool TeleportAbility::use(Robot& robot, TurnContext& context, AbilityTarget& tar
 }
 
 bool TeleportAbility::is_cell_required() const { return true; }
+
+void TeleportAbility::upgrade(){
+
+    int new_cost = get_energy_cost() - TELEPORT_UPGRADE_SIZE;
+
+    if(new_cost < MIN_TELEPORT_COST){ 
+        set_energy_cost(MIN_TELEPORT_COST);
+    } else{
+        set_energy_cost(new_cost);
+    }
+
+}
