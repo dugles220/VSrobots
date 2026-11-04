@@ -1,6 +1,4 @@
 #pragma once
-#ifndef CELL_H
-#define CELL_H
 
 #include "Entity.h"
 #include "Status.h"
@@ -53,5 +51,3 @@ public:
     std::unique_ptr<Status> generate_random_status(std::mt19937& gen);
 
 };
-
-#endif

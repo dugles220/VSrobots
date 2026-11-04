@@ -1,5 +1,4 @@
-#ifndef GAME_CYCLE_H
-#define GAME_CYCLE_H
+#pragma once
 
 #include "Field.h"
 #include "ConsoleRenderer.h"
@@ -46,5 +45,3 @@ public:
     size_t get_turn() const;
 
 };
-
-#endif

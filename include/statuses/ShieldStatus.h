@@ -1,6 +1,4 @@
 #pragma once
-#ifndef OVERLOAD_STATUS_H
-#define OVERLOAD_STATUS_H
 
 #include "Status.h"
 
@@ -24,5 +22,3 @@ public:
     void stack(std::vector<std::unique_ptr<Status>> statuses);
 
 };
-
-#endif

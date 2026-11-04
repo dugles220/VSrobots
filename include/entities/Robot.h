@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ROBOT_H
-#define ROBOT_H
 
 #include "Entity.h"
 #include "Status.h"
@@ -11,6 +9,10 @@
 #include <memory>
 
 #define MAX_SPEED 5
+
+#define ROBOT_DAMAGE_EXP_COEFF 0.5
+#define ROBOT_HEALTH_EXP_COEFF 0.1
+#define ROBOT_ENERGY_EXP_COEFF 0.02
 
 class Robot : public Entity{
 private:
@@ -24,7 +26,8 @@ private:
     std::vector<std::unique_ptr<Status>> statuses;
     std::vector<std::unique_ptr<Ability>> abilities;
 
-    double exp;
+    int level = 1;
+    int experience = 0;
 
 public:
 
@@ -35,7 +38,6 @@ public:
     bool interact(std::shared_ptr<Entity> entity);
     bool attack(Entity& target);
     bool heal(Entity& target);
-    void level_up();
 
     void increase_energy(int value);
     bool decrease_energy(int value);
@@ -51,9 +53,11 @@ public:
     void set_max_energy(int value);
     void set_curr_energy(int value);
 
-    double get_exp() const;
-    void set_exp(double value);
-    void add_exp(double to_add);
+    int get_exp() const;
+    int get_level() const;
+    int add_exp(int to_add);
+    void level_up();
+    int get_exp_earn() const;
 
     void take_damage(int value);
 
@@ -66,5 +70,3 @@ public:
     
 
 };
-
-#endif

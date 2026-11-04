@@ -1,5 +1,6 @@
 #include "Robot.h"
 #include "AIController.h"
+#include "LevelSystem.h"
 
 #include <stdexcept>
 
@@ -47,10 +48,6 @@ bool Robot::attack(Entity& target){
     return false;
 }
 
-void Robot::level_up(){
-
-}
-
 void Robot::increase_energy(int value){
 
     int new_energy = get_curr_energy() + value;
@@ -81,7 +78,6 @@ int Robot::get_speed() const{ return speed; }
 int Robot::get_damage() const { return damage; }
 int Robot::get_max_energy() const { return max_energy; }
 int Robot::get_curr_energy() const { return curr_energy; }
-double Robot::get_exp() const { return exp; }
 
 void Robot::set_speed(int value){
 
@@ -107,14 +103,36 @@ void Robot::set_curr_energy(int value){
     curr_energy = value;
 }
 
-void Robot::set_exp(double value){
-    if(value < 0){ exp = 0; }
-    exp = value;
+int Robot::get_exp() const { return experience; }
+int Robot::get_level() const { return level; }
+
+int Robot::add_exp(int amount){
+
+    if(amount < 0){ return 0; }
+
+    experience += amount;
+
+    int levels_gained = 0;
+
+    while (experience >= LevelSystem::get_required_exp(get_level())){
+        experience -= LevelSystem::get_required_exp(get_level());
+        level_up();
+        levels_gained++;
+    }
+
+    return levels_gained;
 }
 
-void Robot::add_exp(double value){
-    if(value < 0){ return; }
-    exp += value;
+void Robot::level_up(){
+
+    level++;
+
+    LevelBonus lb = LevelSystem::get_level_bonus(get_level());
+
+    set_max_health(get_max_health() + lb.health);
+    set_max_energy(get_max_energy() + lb.energy);
+    set_damage(get_damage() + lb.damage);
+
 }
 
 void Robot::take_damage(int amount){
@@ -160,4 +178,17 @@ void Robot::add_ability(std::unique_ptr<Ability> ability){
         }
     }
     abilities.push_back(std::move(ability));
+}
+
+int Robot::get_exp_earn() const{
+
+    double h_coeff = ROBOT_HEALTH_EXP_COEFF;
+    double e_coeff = ROBOT_ENERGY_EXP_COEFF;
+    double d_coeff = ROBOT_DAMAGE_EXP_COEFF;
+
+    int earned_exp = get_max_health() * h_coeff +
+                     get_max_energy() * e_coeff +
+                     get_damage() * d_coeff;
+
+    return earned_exp;
 }
