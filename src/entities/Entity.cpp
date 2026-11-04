@@ -46,3 +46,5 @@ void Entity::take_heal(int value){
 
     set_curr_health(new_health);
 }
+
+bool Entity::is_dead() const { return curr_health == 0; }

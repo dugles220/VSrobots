@@ -29,6 +29,9 @@ public:
 
     virtual void take_damage(int value);
     virtual void take_heal(int value);
+    virtual bool is_dead() const;
+
+    virtual int get_exp_earn() const = 0;
 
     virtual ~Entity() = default;
 };

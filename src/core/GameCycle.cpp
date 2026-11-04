@@ -92,14 +92,14 @@ void GameCycle::process_end_turn(){
 void GameCycle::process_player_input(std::shared_ptr<Robot> player){
 
     char input = BAD_INPUT;
-
     std::string good_symbs = "wasdnbWASDNB";
 
     int available_moves = player->get_speed();
 
     size_t px, py;
-
     field.get_entity_pos(player.get(), px, py);
+
+    int levels_gained = 0;
 
     while(available_moves > 0){
 
@@ -154,8 +154,21 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
         }
 
         if(cell.is_occupied()){
-            if(player->interact(cell.get_entity())){
+
+            const auto& e = cell.get_entity();
+
+            if(player->interact(e)){
+                if(e->is_dead()){
+                    levels_gained = player->add_exp(e->get_exp_earn());
+                }
+
                 available_moves = 0;
+
+                if(levels_gained > 0){
+                    for(int i = 0; i < levels_gained; i++){
+                        process_ability_pick(*player);
+                    }
+                }
                 break;
             }
             else{
