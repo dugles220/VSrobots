@@ -21,6 +21,7 @@ public:
     virtual bool is_cell_required() const { return false; }
 
     int get_energy_cost() const { return energy_cost; }
+    void set_energy_cost(int value);
     std::string get_name() const { return name; }
 
 };

@@ -30,3 +30,14 @@ bool HealAbility::use(Robot& robot, TurnContext&, AbilityTarget&){
 
     return false;
 }
+
+void HealAbility::upgrade(){
+
+    int upgraded_heal = heal_value + HEAL_UPGRADE_SIZE;
+
+    if(upgraded_heal > MAX_HEAL_VALUE){
+        heal_value = MAX_HEAL_VALUE;
+    } else{
+        heal_value = upgraded_heal;
+    }
+}
