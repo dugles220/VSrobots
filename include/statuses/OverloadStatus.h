@@ -15,6 +15,7 @@ public:
     OverloadStatus();
 
     bool is_expired() const;
+    bool blocks_ability();
 
     void stack(std::vector<std::unique_ptr<Status>> statuses);
 
