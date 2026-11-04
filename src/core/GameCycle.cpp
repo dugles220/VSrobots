@@ -7,7 +7,7 @@
 #include <limits>
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
-    field(Field(field_height, field_width)),
+    field(Field(field_height, field_width, true)),
     renderer(ConsoleRenderer()),
     ai(AIController(field, field.spawn_robot(
                            field_width / 2,
@@ -295,11 +295,14 @@ bool GameCycle::process_ability_use(Robot& player){
 
     const auto& abilities = player.get_abilities();
 
+    for(auto& status : player.get_statuses()){
+        if(status->blocks_ability()) return false;
+    }
+
     std::string msg = "Available abilities:";
     print_abilities(msg, abilities);
 
     bool is_picked = false;
-
     int number = 0;
    
     while(!is_picked){

@@ -4,7 +4,10 @@
 #include <algorithm>
 #include <format>
 
-Field::Field(size_t height, size_t width): height(height), width(width), grid(height, std::vector<Cell>(width)){
+Field::Field(size_t height, size_t width, bool statuses): 
+    height(height),
+    width(width),
+    grid(height){
 
     if(height < MINIMAL_SIZE || width < MINIMAL_SIZE){
         throw std::invalid_argument(std::format(
@@ -15,6 +18,19 @@ Field::Field(size_t height, size_t width): height(height), width(width), grid(he
         throw std::invalid_argument(std::format(
             "Error: maximum side size is {}", MAX_SIZE));
     }
+
+    for(auto& row : grid){
+        row.resize(width);
+    }
+
+    if(statuses){
+        for(size_t y = 0; y < height; y++){
+            for(size_t x = 0; x < width; x++){
+                grid[y][x].generate_statuses(gen);
+            }
+        }
+    }
+
 }
 
 size_t Field::get_height() const{ return height; }
@@ -140,6 +156,7 @@ bool Field::move_robot(Robot& robot, Cell& cell){
         Cell& curr_cell = get_cell(curr_x, curr_y);
         cell.set_entity(curr_cell.get_entity());
         curr_cell.set_entity(nullptr);
+        cell.transfer_status(*std::dynamic_pointer_cast<Robot>(cell.get_entity()), gen);
 
         return true;
     }

@@ -7,13 +7,14 @@
 #include "Factory.h"
 #include <vector>
 #include <memory>
+#include <random>
 
 #define MINIMAL_SIZE 3
 #define MAX_SIZE 60
 
 class Field{
 public:
-    Field(size_t height, size_t width);
+    Field(size_t height, size_t width, bool statuses);
     ~Field() = default;
 
     size_t get_width() const;
@@ -49,6 +50,7 @@ private:
     size_t width = 0;
     std::vector<std::vector<Cell>> grid;
     std::vector<std::shared_ptr<Entity>> entities;
+    std::mt19937 gen{std::random_device{}()};
 
 };
 
