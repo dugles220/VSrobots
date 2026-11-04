@@ -1,6 +1,4 @@
 #pragma once
-#ifndef TURN_CONTEXT_H
-#define TURN_CONTEXT_H
 
 #include <memory>
 
@@ -14,5 +12,3 @@ struct TurnContext {
     AIController &ai;
     Robot& player;
 };
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef AI_CONTROLLER_H
-#define AI_CONTROLLER_H
 
 class Field;
 class Robot;
@@ -22,5 +20,3 @@ public:
 
     ~AIController() = default;
 };
-
-#endif

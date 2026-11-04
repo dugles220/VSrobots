@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ROBOT_H
-#define ROBOT_H
 
 #include "Entity.h"
 #include "Status.h"
@@ -66,5 +64,3 @@ public:
     
 
 };
-
-#endif

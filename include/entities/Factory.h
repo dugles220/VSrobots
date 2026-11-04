@@ -1,6 +1,4 @@
 #pragma once
-#ifndef FACTORY_H
-#define FACTORY_H
 
 #include "Entity.h"
 #include "TurnContext.h"
@@ -23,5 +21,3 @@ public:
     ~Factory() = default;
 
 };
-
-#endif

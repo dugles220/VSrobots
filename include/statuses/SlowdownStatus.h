@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SLOWDOWN_STATUS_H
-#define SLOWDOWN_STATUS_H
 
 #include "Status.h"
 
@@ -27,5 +25,3 @@ public:
     void stack(std::vector<std::unique_ptr<Status>> statuses);
 
 };
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef STATUS_H
-#define STATUS_H
 
 class Robot;
 #include <memory>
@@ -23,5 +21,3 @@ public:
     virtual void stack(std::vector<std::unique_ptr<Status>> statuses) = 0;
 
 };
-
-#endif

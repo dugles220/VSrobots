@@ -1,6 +1,4 @@
 #pragma once
-#ifndef CONSOLE_RENDERER_H
-#define CONSOLE_RENDERER_H
 
 #include "Field.h"
 
@@ -10,5 +8,3 @@ public:
 
     void render(const Field& field);
 };
-
-#endif

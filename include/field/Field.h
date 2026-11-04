@@ -1,6 +1,4 @@
 #pragma once
-#ifndef FIELD_H
-#define FIELD_H
 
 #include "Cell.h"
 #include "Robot.h"
@@ -53,5 +51,3 @@ private:
     std::mt19937 gen{std::random_device{}()};
 
 };
-
-#endif

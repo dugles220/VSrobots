@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ENTITY_H
-#define ENTITY_H
 
 #include <memory>
 #include "GameConstants.h"
@@ -34,5 +32,3 @@ public:
 
     virtual ~Entity() = default;
 };
-
-#endif
