@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Field.h"
-#include "ConsoleRenderer.h"
+#include "Renderer.h"
 #include "AIController.h"
 
 #include "AbilitiesCatalog.h"
@@ -18,7 +18,7 @@ class GameCycle{
 
 private:
     Field field;
-    ConsoleRenderer renderer;
+    std::unique_ptr<Renderer> renderer;
     size_t turn = 0;
     AIController ai;
     AbilitiesCatalog ac;

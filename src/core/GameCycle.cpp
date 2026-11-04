@@ -1,4 +1,5 @@
 #include "GameCycle.h"
+#include "ConsoleRenderer.h"
 
 #include <iostream>
 #include <format>
@@ -8,7 +9,7 @@
 
 GameCycle::GameCycle(size_t field_height, size_t field_width): 
     field(Field(field_height, field_width, true)),
-    renderer(ConsoleRenderer()),
+    renderer(std::make_unique<ConsoleRenderer>()),
     ai(AIController(field, field.spawn_robot(
                            field_width / 2,
                            field_height / 2,
@@ -17,7 +18,7 @@ GameCycle::GameCycle(size_t field_height, size_t field_width):
                            DEFAULT_DAMAGE * 5,
                            DEFAULT_SPEED * 3,
                            PLAYER_TEAM))),
-    ac(AbilitiesCatalog()){
+    ac(AbilitiesCatalog()){}
 
 void GameCycle::run(){
 
@@ -29,7 +30,7 @@ void GameCycle::run(){
     process_ability_pick(*player);
 
     update_visibility(player);
-    renderer.render(field);
+    renderer->render(field);
 
     while(!is_game_over(player)){
 
@@ -40,7 +41,7 @@ void GameCycle::run(){
 
         turn++;
 
-        renderer.render(field);
+        renderer->render(field);
 
         std::cout << "HEALTH: " << player->get_curr_health();
         std::cout << "/" << player->get_max_health() << std::endl;
@@ -191,7 +192,7 @@ void GameCycle::process_player_input(std::shared_ptr<Robot> player){
         }
 
         update_visibility(player);
-        renderer.render(field);
+        renderer->render(field);
 
         input = BAD_INPUT;
     }

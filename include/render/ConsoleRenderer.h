@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Field.h"
+#include "Renderer.h"
 
-class ConsoleRenderer{
+class ConsoleRenderer : public Renderer{
 public:
     ~ConsoleRenderer() = default;
 
