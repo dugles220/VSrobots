@@ -31,7 +31,7 @@ public:
     void decrease_turns(size_t turns_count);
 
     void set_turns(size_t value);
-    size_t get_turns() const;
+    int get_turns() const;
 
     void stack(std::vector<std::unique_ptr<Status>> statuses);
 

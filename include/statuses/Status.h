@@ -26,5 +26,6 @@ public:
     virtual void stack(std::vector<std::unique_ptr<Status>> statuses) = 0;
 
     std::string get_name() const { return name; }
+    virtual int get_turns() const { return -1; }
 
 };

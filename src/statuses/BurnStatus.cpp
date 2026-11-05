@@ -40,7 +40,7 @@ void BurnStatus::set_turns(size_t value){
     else turns = value;
 }
 
-size_t BurnStatus::get_turns() const{ return turns; }
+int BurnStatus::get_turns() const{ return turns; }
 
 void BurnStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
     for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){

@@ -21,7 +21,7 @@ void SlowdownStatus::set_turns(size_t value){
     if(value > MAX_SLOWDOWN_DUR) turns = MAX_SLOWDOWN_DUR;
     else turns = value;
 }
-size_t SlowdownStatus::get_turns() const{ return turns; }
+int SlowdownStatus::get_turns() const{ return turns; }
 
 void SlowdownStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
     for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){
