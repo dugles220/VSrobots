@@ -1,6 +1,8 @@
 #include "OverloadStatus.h"
 
-OverloadStatus::OverloadStatus() : is_overloaded(true){}
+OverloadStatus::OverloadStatus() : 
+    Status(OVERLOAD_STATUS_NAME),
+    is_overloaded(true){}
 
 bool OverloadStatus::is_expired() const { return !is_overloaded; }
 

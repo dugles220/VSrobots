@@ -1,12 +1,16 @@
 #include "BurnStatus.h"
 #include "Robot.h"
 
-BurnStatus::BurnStatus(): damage(DEFAULT_BURN_DAMAGE),
-                          turns(DEFAULT_BURN_DUR){}
+BurnStatus::BurnStatus(): 
+    Status(BURN_STATUS_NAME),
+    damage(DEFAULT_BURN_DAMAGE),
+    turns(DEFAULT_BURN_DUR){}
 
 BurnStatus::BurnStatus(size_t damage, size_t turns):
-                       damage(damage),
-                       turns(turns){
+    Status(BURN_STATUS_NAME),
+    damage(damage),
+    turns(turns)
+{
     if(damage > MAX_BURN_DAMAGE) damage = MAX_BURN_DAMAGE;
     if(turns > MAX_BURN_DUR) turns = MAX_BURN_DUR;
 }

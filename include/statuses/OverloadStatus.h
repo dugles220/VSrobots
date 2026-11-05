@@ -2,6 +2,8 @@
 
 #include "Status.h"
 
+#define OVERLOAD_STATUS_NAME "Overload"
+
 class OverloadStatus : public Status {
 
 private:

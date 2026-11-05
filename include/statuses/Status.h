@@ -3,11 +3,16 @@
 class Robot;
 #include <memory>
 #include <vector>
+#include <string>
 
 class Status {
 
+private:
+    std::string name;
+
 public:
-    
+   
+    Status(std::string name) : name(name) {};
     virtual ~Status() = default;
 
     virtual void apply(std::shared_ptr<Robot>) {}
@@ -19,5 +24,7 @@ public:
     virtual bool blocks_ability() { return false; }
 
     virtual void stack(std::vector<std::unique_ptr<Status>> statuses) = 0;
+
+    std::string get_name() const { return name; }
 
 };

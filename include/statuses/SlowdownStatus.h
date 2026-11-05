@@ -4,6 +4,7 @@
 
 #define DEFAULT_SLOWDOWN_DUR 1
 #define MAX_SLOWDOWN_DUR 5
+#define SLOWDOWN_STATUS_NAME "Slowdown"
 
 class SlowdownStatus : public Status {
 

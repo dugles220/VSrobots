@@ -7,6 +7,8 @@
 #define DEFAULT_BURN_DUR 5
 #define MAX_BURN_DUR 10
 
+#define BURN_STATUS_NAME "Burn"
+
 class BurnStatus : public Status {
 
 private:

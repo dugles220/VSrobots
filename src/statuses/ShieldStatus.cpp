@@ -1,8 +1,12 @@
 #include "ShieldStatus.h"
 
-ShieldStatus::ShieldStatus() : damage_block(DEFAULT_DAMAGE_BLOCK) {}
+ShieldStatus::ShieldStatus() : 
+    Status(SHIELD_STATUS_NAME),
+    damage_block(DEFAULT_DAMAGE_BLOCK) {}
 
-ShieldStatus::ShieldStatus(int damage_block) : damage_block(damage_block){
+ShieldStatus::ShieldStatus(int damage_block) :
+    Status(SHIELD_STATUS_NAME),
+    damage_block(damage_block){
     if(damage_block > MAX_DAMAGE_BLOCK) this->damage_block = MAX_DAMAGE_BLOCK;
     else if(damage_block < 0){
         this->damage_block = 0;

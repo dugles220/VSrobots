@@ -4,6 +4,7 @@
 
 #define MAX_DAMAGE_BLOCK 100
 #define DEFAULT_DAMAGE_BLOCK 10
+#define SHIELD_STATUS_NAME "Shield"
 
 class ShieldStatus : public Status {
 private:

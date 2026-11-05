@@ -1,8 +1,12 @@
 #include "SlowdownStatus.h"
 
-SlowdownStatus::SlowdownStatus(): turns(DEFAULT_SLOWDOWN_DUR){}
+SlowdownStatus::SlowdownStatus() : 
+    Status(SLOWDOWN_STATUS_NAME),
+    turns(DEFAULT_SLOWDOWN_DUR){}
 
-SlowdownStatus::SlowdownStatus(size_t turns): turns(turns){
+SlowdownStatus::SlowdownStatus(size_t turns) : 
+    Status(SLOWDOWN_STATUS_NAME),
+    turns(turns){
     if(turns > MAX_SLOWDOWN_DUR) this->turns = MAX_SLOWDOWN_DUR;
 }
 
