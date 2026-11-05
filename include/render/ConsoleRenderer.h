@@ -3,8 +3,12 @@
 #include "Renderer.h"
 
 class ConsoleRenderer : public Renderer{
+private:
+    const Field& field;
+
 public:
+    ConsoleRenderer() = default;
     ~ConsoleRenderer() = default;
 
-    void render(const Field& field);
+    void render(InputMode mode);
 };

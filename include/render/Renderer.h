@@ -1,11 +1,12 @@
 #pragma once
 
-class Field;
+#include "Field.h"
+#include "InputMode.h"
 
 class Renderer{
-
 public:
-    virtual void render(const Field& field) = 0;
+
+    virtual void render(InputMode mode) = 0;
     virtual ~Renderer() = default;
 
 };
