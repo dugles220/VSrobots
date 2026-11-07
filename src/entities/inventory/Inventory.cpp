@@ -1,6 +1,6 @@
 #include "Inventory.h"
 
-bool Inventory::is_full() const { return items.size() >= capacity; }
+bool Inventory::is_full() const { return (int)items.size() >= capacity; }
 
 bool Inventory::add_item(std::unique_ptr<Item> item){
     if(!is_full()){
@@ -12,7 +12,7 @@ bool Inventory::add_item(std::unique_ptr<Item> item){
 }
 
 void Inventory::use_item(int index, Robot& robot){
-    if(index < 0 || index > items.size() - 1) return;
+    if(index < 0 || index > (int)items.size() - 1) return;
 
     items[index]->use(robot);
 

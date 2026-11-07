@@ -15,7 +15,7 @@ public:
     Status(std::string name) : name(name) {};
     virtual ~Status() = default;
 
-    virtual void apply(Robot& robot) {}
+    virtual void apply(Robot&) {}
     virtual void execute_on_turn_start(std::shared_ptr<Robot>) {}
     virtual void execute_on_turn_end(std::shared_ptr<Robot>) {}
     virtual bool is_expired() const = 0;

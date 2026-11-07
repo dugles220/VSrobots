@@ -16,5 +16,5 @@ public:
     void apply(Robot& robot);
     bool is_expired() const { return true; }
 
-    void stack(std::vector<std::unique_ptr<Status>>& statuses) {};
+    void stack(std::vector<std::unique_ptr<Status>>&) {};
 };

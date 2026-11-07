@@ -8,7 +8,8 @@ FLAGS = -Wall -Wextra -Werror -std=c++20 -g \
 		-Iinclude/render \
 		-Iinclude/statuses \
 		-Iinclude/abilities \
-		-Iinclude/entities/levels
+		-Iinclude/entities/levels \
+		-Iinclude/entities/inventory
 SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 SRC_DIR = src
 OBJ_DIR = obj
