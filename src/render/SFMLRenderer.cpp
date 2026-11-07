@@ -86,17 +86,17 @@ void SFMLRenderer::render_cells(){
             if(!c.get_passability()){
                     cell.setFillColor(sf::Color(50, 50, 50));
             } else{
-                int p = c.get_passability();
+                int p = c.get_pass_difficulty();
 
                 switch(p){
                     case 1:
                         cell.setFillColor(sf::Color(192, 192, 192));
                         break;
                     case 2:
-                        cell.setFillColor(sf::Color(255, 255, 51));
+                        cell.setFillColor(sf::Color(128, 128, 128));
                         break;
                     case 3:
-                        cell.setFillColor(sf::Color(255, 51, 51));
+                        cell.setFillColor(sf::Color(70, 70, 70));
                         break;
                 }
             }
@@ -106,7 +106,7 @@ void SFMLRenderer::render_cells(){
 
             window.draw(cell);
 
-            if(c.get_statuses().size() != 0){
+            if(c.get_passability() == true && c.get_statuses().size() != 0){
 
                 sf::Vector2f pos = cell.getPosition();
 
