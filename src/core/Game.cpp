@@ -139,6 +139,16 @@ void Game::process_key(sf::Keyboard::Key key){
 
             break;
         }
+        case(InputMode::TargetPick):{
+            switch(key){
+                case sf::Keyboard::Key::Escape:
+                    picked_ability_index = -1;
+                    game.set_input_mode(InputMode::Normal);
+                    break;
+                default:
+                    break;
+            }
+        }
         default:
             break;
     }
