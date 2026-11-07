@@ -316,7 +316,7 @@ void SFMLRenderer::render_ui(){
         std::string turn_info = "";
 
         if(turns != -1){
-            turn_info = std::format(": {} turns", turns);
+            turn_info = std::format(": {} turn(s)", turns);
         }
 
         sf::Text s(font, std::format("{}{}", status->get_name(), turn_info), 16);
