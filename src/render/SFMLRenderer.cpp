@@ -18,12 +18,13 @@ SFMLRenderer::SFMLRenderer(Field& field)
     window.setFramerateLimit(60);
 }
 
-void SFMLRenderer::render(InputMode mode){
+void SFMLRenderer::render(InputMode mode, const EventLog& log){
     window.clear(sf::Color::Black);
 
     render_cells();
     render_entities();
     render_ui();
+    render_event_log(log);
 
     if(mode == InputMode::AbilityPick){
         render_ability_menu();
@@ -324,5 +325,46 @@ void SFMLRenderer::render_ui(){
 
         st_pos.y += s.getLocalBounds().size.y + 10;
 
+    }
+}
+
+void SFMLRenderer::render_event_log(const EventLog& event_log){
+
+    float panel_y = static_cast<float>(field.get_height() * CELL_SIZE);
+    float panel_x = 0.f;
+
+    float panel_width = static_cast<float>(field.get_width() * CELL_SIZE);
+    float panel_height = D_PANEL_HEIGHT;
+
+    sf::RectangleShape panel({panel_width, panel_height});
+    panel.setFillColor(UIColors::PANEL);
+    panel.setPosition({panel_x, panel_y});
+    window.draw(panel);
+
+    sf::Text header(font, "EVENT LOG", 20);
+    header.setFillColor(UIColors::TEXT);
+    header.setPosition({panel_x + 10.f, panel_y + 5.f});
+    window.draw(header);
+
+    const auto& events = event_log.get_events();
+
+    size_t max_visible = 5;
+    float line_height = 22.f;
+
+    size_t count = std::min(events.size(), max_visible);
+
+    size_t start = events.size() - count;
+
+    float text_y = panel_y + 35.f;
+
+    for(size_t i = start; i < events.size(); ++i){
+
+        sf::Text text(font, events[i], 14);
+        text.setFillColor(UIColors::TEXT);
+        text.setPosition({panel_x + 10.f, text_y});
+
+        window.draw(text);
+
+        text_y += line_height;
     }
 }

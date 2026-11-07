@@ -91,10 +91,7 @@ void GameCycle::process_end_turn(){
     }
 }
 
-std::string GameCycle::process_player_action(PlayerCommand command){
-
-    std::string turn = std::format("[TURN {}]: ", get_turn());
-    std::string error = "[ERROR]: ";
+void GameCycle::process_player_action(PlayerCommand command){
 
     const auto& player = std::dynamic_pointer_cast<Robot>(field.get_player());
 
@@ -123,27 +120,38 @@ std::string GameCycle::process_player_action(PlayerCommand command){
         case PlayerCommand::Wait:
             available_moves = 0;
             turn_phase = TurnPhase::EnemyTurn;
-            return turn + "PLAYER remained in place.";
+            log.add("PLAYER remained in place", get_turn());
+            return;
         case PlayerCommand::UseAbility:
             input_mode = InputMode::AbilityUse;
-            return "";
+            return;
     }
     
     if(!field.are_coord_valid(new_x, new_y)){
-        return error + "End of the map!";
+        log.add("End of the map!", get_turn());
+        return;
     }
 
     Cell& cell = field.get_cell(new_x, new_y);
 
     if(cell.get_passability() == false){
-        return error + "There is a wall on the way!";
-    } else if(cell.is_occupied()){
+        log.add("There is a wall on the way!", get_turn());
+        return;
+    }
+    else if(cell.is_occupied()){
 
         const auto& e = cell.get_entity();
 
         if(player->interact(e)){
+
+
+            log.add("PLAYER interacted with entity", get_turn());
+
             if(e->is_dead()){
-                levels_gained = player->add_exp(e->get_exp_earn());
+                int xp = e->get_exp_earn();
+                auto message = std::format("PLAYER destroyed entity (+{} XP)", xp);
+                log.add(message, get_turn());
+                levels_gained = player->add_exp(xp);
             }
 
             available_moves = 0;
@@ -151,8 +159,13 @@ std::string GameCycle::process_player_action(PlayerCommand command){
             if(levels_gained > 0){
                 input_mode = InputMode::AbilityPick;
             }
-        } else { return error + "Not enough energy to attack!"; }
-    } else {
+        }
+        else {
+            log.add("Not enough energy to attack!", get_turn()); 
+            return;
+        }
+    } 
+    else {
 
         int move_cost = cell.get_pass_difficulty();
 
@@ -161,8 +174,16 @@ std::string GameCycle::process_player_action(PlayerCommand command){
                 px = new_x;
                 py = new_y;
                 available_moves -= move_cost;
-            } else{ return error + "Not enough energy to move!"; }
-        } else { return error + "Not enough speed to pass the cell!"; }
+                log.add(std::format("PLAYER moved to <{}, {}>", px, py), get_turn());
+            }
+            else {
+                log.add("Not enough energy to move!", get_turn()); 
+                return;
+            }
+        } 
+        else {
+            log.add("Not enough speed to pass the cell!", get_turn());
+        }
     }
 
     update_visibility(player);
@@ -170,8 +191,6 @@ std::string GameCycle::process_player_action(PlayerCommand command){
     if(available_moves <= 0 && input_mode == InputMode::Normal){
         turn_phase = TurnPhase::EnemyTurn;
     }
-
-    return "";
 }
 
 bool GameCycle::is_game_over(){

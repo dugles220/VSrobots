@@ -10,5 +10,5 @@ public:
     ConsoleRenderer() = default;
     ~ConsoleRenderer() = default;
 
-    void render(InputMode mode);
+    void render(InputMode mode, const EventLog& log);
 };

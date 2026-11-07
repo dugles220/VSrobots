@@ -2,11 +2,12 @@
 
 #include "Field.h"
 #include "InputMode.h"
+#include "EventLog.h"
 
 class Renderer{
 public:
 
-    virtual void render(InputMode mode) = 0;
+    virtual void render(InputMode mode, const EventLog& log) = 0;
     virtual ~Renderer() = default;
 
 };

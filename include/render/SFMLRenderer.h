@@ -17,12 +17,13 @@ private:
 public:
     SFMLRenderer(Field& field);
 
-    void render(InputMode mode);
+    void render(InputMode mode, const EventLog& log);
 
     void render_cells();
     void render_entities();
     void render_ui();
     void render_ability_menu();
+    void render_event_log(const EventLog& event_log);
 
     sf::RenderWindow& get_window() {return window; }
 

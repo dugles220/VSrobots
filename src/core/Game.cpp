@@ -152,7 +152,7 @@ void Game::run(){
 
         game.update();
 
-        renderer.render(game.get_input_mode());
+        renderer.render(game.get_input_mode(), game.get_log());
 
     }
 }

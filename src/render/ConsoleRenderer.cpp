@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cmath>
 
-void ConsoleRenderer::render(InputMode){
+void ConsoleRenderer::render(InputMode, const EventLog&){
 
     system("clear");
 

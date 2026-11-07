@@ -8,6 +8,7 @@
 #include "PlayerCommand.h"
 #include "InputMode.h"
 #include "TurnPhase.h"
+#include "EventLog.h"
 
 #include "AbilitiesCatalog.h"
 
@@ -26,6 +27,7 @@ private:
     AIController ai;
     AbilitiesCatalog ac;
     InputMode input_mode = InputMode::AbilityPick;
+    EventLog log;
 
     int available_moves = 0;
 
@@ -38,7 +40,7 @@ public:
 
     void process_player_turn();
     void process_input(PlayerCommand command);
-    std::string process_player_action(PlayerCommand command);
+    void process_player_action(PlayerCommand command);
     void process_enemies();
     void process_start_turn();
     void process_end_turn();
@@ -52,5 +54,6 @@ public:
     Field& get_field();
     InputMode get_input_mode() const;
     void set_input_mode(InputMode mode);
+    const EventLog& get_log();
 
 };
