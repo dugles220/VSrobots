@@ -68,6 +68,12 @@ void SFMLRenderer::render_cells(){
     int field_width = (int)field.get_width();
     int cell_size = CELL_SIZE;
 
+    size_t u_px, u_py;
+    field.get_entity_pos(field.get_player().get(), u_px, u_py);
+
+    int px = (int)u_px;
+    int py = (int)u_py;
+
     for (int y = 0; y < field_height; ++y) {
         for (int x = 0; x < field_width; ++x) {
 
@@ -82,6 +88,15 @@ void SFMLRenderer::render_cells(){
                 static_cast<float>(x * cell_size),
                 static_cast<float>(y * cell_size)
             });
+
+            cell.setOutlineColor(sf::Color(100, 100, 100));
+            cell.setOutlineThickness(1.f);
+
+            if(!c.get_visibility()){
+                cell.setFillColor(sf::Color(17, 19, 24, 255));
+                window.draw(cell);
+                continue;
+            }
 
             if(!c.get_passability()){
                     cell.setFillColor(sf::Color(50, 50, 50));
@@ -101,12 +116,28 @@ void SFMLRenderer::render_cells(){
                 }
             }
 
-            cell.setOutlineColor(sf::Color(100, 100, 100));
-            cell.setOutlineThickness(1.f);
-
             window.draw(cell);
 
-            if(c.get_passability() == true && c.get_statuses().size() != 0){
+            int dx = px - x;
+            int dy = py - y;
+
+            int dist = dx * dx + dy * dy;
+
+            bool is_in_radius = dist <= VISIBILITY_RADIUS * VISIBILITY_RADIUS;
+
+            if(!is_in_radius){
+                sf::RectangleShape fog({CELL_SIZE, CELL_SIZE});
+                fog.setFillColor(sf::Color(0, 0, 0, 150));
+
+                fog.setPosition({
+                    static_cast<float>(x * cell_size),
+                    static_cast<float>(y * cell_size)
+                });
+
+                window.draw(fog);
+            }
+
+            if(is_in_radius && c.get_passability() == true && c.get_statuses().size() != 0){
 
                 sf::Vector2f pos = cell.getPosition();
 
@@ -140,6 +171,11 @@ void SFMLRenderer::render_cells(){
 
 void SFMLRenderer::render_entities(){
 
+    size_t u_px, u_py;
+    field.get_entity_pos(field.get_player().get(), u_px, u_py);
+    int px = (int)u_px;
+    int py = (int)u_py;
+
     for(const auto& e : field.get_entities()){
             
         size_t ex, ey;
@@ -154,6 +190,16 @@ void SFMLRenderer::render_entities(){
             if(r->get_team() == PLAYER_TEAM){
                 r_shape.setFillColor(sf::Color::Green);
             } else{
+
+                int rx = (int)ex;
+                int ry = (int)ey;
+
+                int dx = px - rx;
+                int dy = py - ry;
+
+                int dist = dx * dx + dy * dy;
+                if(dist > VISIBILITY_RADIUS * VISIBILITY_RADIUS) continue;
+
                 r_shape.setFillColor(sf::Color::Red);
             }
 
@@ -161,6 +207,8 @@ void SFMLRenderer::render_entities(){
             window.draw(r_shape);
 
         } else if(const auto& f = std::dynamic_pointer_cast<Factory>(e)){
+
+            if(field.get_cell(ex, ey).get_visibility() == false) continue;
 
             sf::RectangleShape f_shape({28.f * 2, 28.f * 2});
 

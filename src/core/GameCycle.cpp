@@ -22,6 +22,8 @@ GameCycle::GameCycle(size_t field_height, size_t field_width):
 
 void GameCycle::update(){
 
+    update_visibility(std::dynamic_pointer_cast<Robot>(field.get_player()));
+
     if(input_mode != InputMode::Normal) {
         return;
     }
