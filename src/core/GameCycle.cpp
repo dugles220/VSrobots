@@ -314,61 +314,6 @@ bool GameCycle::process_ability_use(int index, Cell* picked_cell){
     }
 }
 
-// Cell& GameCycle::process_cell_pick(Robot& player) {
-
-//     size_t cx, cy;
-//     field.get_entity_pos(&player, cx, cy);
-
-//     bool is_picked = false;
-
-//     std::string good_symbs = "wasdyWASDY";
-//     char input = BAD_INPUT;
-
-//     std::cout << "Choose cell. Use WASD and Y to confirm.\n";
-
-//     while(!is_picked){
-
-//         while(input == BAD_INPUT){
-//             std::cin >> input;
-//             if(good_symbs.find(input) == std::string::npos){ input = BAD_INPUT; } 
-//         }
-
-//         input = tolower(input);
-
-//         size_t new_x = cx;
-//         size_t new_y = cy;
-
-//         switch (input){
-//             case 's':
-//                 new_y += 1;
-//                 break;
-//             case 'a':
-//                 new_x -= 1;
-//                 break;
-//             case 'w':
-//                 new_y -= 1;
-//                 break;
-//             case 'd':
-//                 new_x += 1; 
-//                 break;
-//             case 'y':
-//                 is_picked = true;
-//                 break;
-//         }
-        
-//         if(!field.are_coord_valid(new_x, new_y)){
-//             input = BAD_INPUT; 
-//             continue;
-//         } else{
-//             cx = new_x;
-//             cy = new_y;
-//             input = BAD_INPUT;
-//         }
-//     }
-
-//     return field.get_cell(cx, cy);
-// }
-
 Field& GameCycle::get_field() { return field; }
 InputMode GameCycle::get_input_mode() const { return input_mode; }
 

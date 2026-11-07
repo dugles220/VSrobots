@@ -38,7 +38,6 @@ public:
     void update();
     bool is_game_over();
 
-    void process_player_turn();
     void process_input(PlayerCommand command);
     void process_player_action(PlayerCommand command);
     void process_enemies();
@@ -48,7 +47,6 @@ public:
 
     void process_ability_pick(int index);
     bool process_ability_use(int index, Cell* picked_cell);
-    Cell& process_cell_pick(Robot& player);
 
     size_t get_turn() const;
     Field& get_field();
