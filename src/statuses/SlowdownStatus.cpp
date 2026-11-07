@@ -23,7 +23,7 @@ void SlowdownStatus::set_turns(size_t value){
 }
 int SlowdownStatus::get_turns() const{ return turns; }
 
-void SlowdownStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
+void SlowdownStatus::stack(std::vector<std::unique_ptr<Status>>& statuses){
     for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){
 
         SlowdownStatus* s = dynamic_cast<SlowdownStatus*>(statuses[i].get());

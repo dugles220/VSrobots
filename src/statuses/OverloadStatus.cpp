@@ -13,7 +13,7 @@ bool OverloadStatus::blocks_ability() {
     } else return false;
 }
 
-void OverloadStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
+void OverloadStatus::stack(std::vector<std::unique_ptr<Status>>& statuses){
 
     for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){
         OverloadStatus* s = dynamic_cast<OverloadStatus*>(statuses[i].get());

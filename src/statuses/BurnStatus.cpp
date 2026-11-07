@@ -42,7 +42,7 @@ void BurnStatus::set_turns(size_t value){
 
 int BurnStatus::get_turns() const{ return turns; }
 
-void BurnStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
+void BurnStatus::stack(std::vector<std::unique_ptr<Status>>& statuses){
     for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){
         BurnStatus* s = dynamic_cast<BurnStatus*>(statuses[i].get());
 

@@ -15,7 +15,7 @@ ShieldStatus::ShieldStatus(int damage_block) :
 }
 bool ShieldStatus::is_expired() const { return is_broken; }
 
-void ShieldStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
+void ShieldStatus::stack(std::vector<std::unique_ptr<Status>>& statuses){
 
     for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){
         ShieldStatus* s = dynamic_cast<ShieldStatus*>(statuses[i].get());

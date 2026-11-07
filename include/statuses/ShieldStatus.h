@@ -20,6 +20,6 @@ public:
 
     int absorb_damage(int incoming_damage);
 
-    void stack(std::vector<std::unique_ptr<Status>> statuses);
+    void stack(std::vector<std::unique_ptr<Status>>& statuses);
 
 };

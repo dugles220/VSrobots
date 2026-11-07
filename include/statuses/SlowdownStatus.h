@@ -23,6 +23,6 @@ public:
     void set_turns(size_t value);
     int get_turns() const;
     
-    void stack(std::vector<std::unique_ptr<Status>> statuses);
+    void stack(std::vector<std::unique_ptr<Status>>& statuses);
 
 };
