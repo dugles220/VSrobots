@@ -42,9 +42,11 @@ void Entity::take_heal(int value){
 
     int new_health = get_curr_health() + value;
 
-    if(new_health > get_max_health()) set_curr_health(get_max_health());
-
-    set_curr_health(new_health);
+    if(new_health > get_max_health()) {
+        set_curr_health(get_max_health());
+    } else {
+        set_curr_health(new_health);
+    }
 }
 
 bool Entity::is_dead() const { return curr_health == 0; }
