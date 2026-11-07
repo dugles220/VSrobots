@@ -6,6 +6,7 @@
 #include "ShieldStatus.h"
 #include "OverloadStatus.h"
 #include "SlowdownStatus.h"
+#include "GetItemStatus.h"
 
 #include <vector>
 #include <random>

@@ -11,8 +11,10 @@ private:
 
 public:
     GetItemStatus();
+    GetItemStatus(std::unique_ptr<Item> item);
 
     void set_item(std::unique_ptr<Item> item);
+    const std::unique_ptr<Item>& get_item() const { return item; }
     void apply(Robot& robot);
     bool is_expired() const { return true; }
 
