@@ -124,6 +124,7 @@ void GameCycle::process_player_action(PlayerCommand command){
             return;
         case PlayerCommand::UseAbility:
             input_mode = InputMode::AbilityUse;
+            log.add("PLAYER starts using ability...", get_turn());
             return;
     }
     
@@ -157,6 +158,9 @@ void GameCycle::process_player_action(PlayerCommand command){
             available_moves = 0;
 
             if(levels_gained > 0){
+                for (int i = 0; i < levels_gained; i++){
+                    log.add("LEVEL UP!", get_turn());
+                }
                 input_mode = InputMode::AbilityPick;
             }
         }
@@ -189,6 +193,7 @@ void GameCycle::process_player_action(PlayerCommand command){
     update_visibility(player);
 
     if(available_moves <= 0 && input_mode == InputMode::Normal){
+        log.add("Enemy turn!", get_turn());
         turn_phase = TurnPhase::EnemyTurn;
     }
 }
@@ -198,8 +203,12 @@ bool GameCycle::is_game_over(){
     const auto& player = field.get_player();
 
     if(player->get_curr_health() == 0){
+        log.add("PLAYER is dead!", get_turn());
+        log.add("GAME OVER!", get_turn());
         return true;
     } else if(field.get_entities().size() == 1){
+        log.add("All enemies destroyed!", get_turn());
+        log.add("YOU WON!", get_turn());
         return true;
     }
 
@@ -272,6 +281,8 @@ void GameCycle::process_ability_pick(int index){
 
     player->add_ability(ac.get_catalog()[index]->clone());
 
+    log.add(std::format("Player got {} ability", ac.get_catalog()[index]->get_name()), get_turn());
+
     input_mode = InputMode::Normal;
 }
 
@@ -282,11 +293,15 @@ bool GameCycle::process_ability_use(int index, Cell* picked_cell){
 
     const auto& abilities = player->get_abilities();
 
-    if(index < 0 || index >= (int)abilities.size()) return false;
+    if(index < 0 || index >= (int)abilities.size()){
+        log.add(std::format("Ability number {} doesn't exist", index), get_turn());
+        return false;
+    }
 
     for(auto& status : player->get_statuses()){
         if(status->blocks_ability()) {
             input_mode = InputMode::Normal;
+            log.add("PLAYER tried to use ability, but he is overloaded!", get_turn());
             return false;
         }
     }
@@ -297,8 +312,10 @@ bool GameCycle::process_ability_use(int index, Cell* picked_cell){
     AbilityTarget target;
 
     if(ability->is_cell_required() || ability->is_target_required()){
-        if(!picked_cell) return false;
-
+        if(!picked_cell){
+            log.add("Pick target!", get_turn());
+            return false;
+        }
         Entity* entity = nullptr;
 
         if(picked_cell->is_occupied()) entity = picked_cell->get_entity().get();
@@ -307,8 +324,12 @@ bool GameCycle::process_ability_use(int index, Cell* picked_cell){
 
     } else target = {}; 
 
-    if(!ability->use(*player, context, target)) return false;
+    if(!ability->use(*player, context, target)){
+        log.add(std::format("Failed to use {} ability", ability->get_name()), get_turn());
+        return false;
+    }
     else{
+        log.add(std::format("PLAYER successfully used {} ability", ability->get_name()), get_turn());
         input_mode = InputMode::Normal;
         return true;
     }
@@ -333,3 +354,5 @@ void GameCycle::process_input(PlayerCommand command){
 }
 
 void GameCycle::set_input_mode(InputMode mode){ input_mode = mode; }
+
+const EventLog& GameCycle::get_log() { return log; }
