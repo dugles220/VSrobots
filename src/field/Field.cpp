@@ -157,6 +157,7 @@ bool Field::move_robot(Robot& robot, Cell& cell){
         cell.set_entity(curr_cell.get_entity());
         curr_cell.set_entity(nullptr);
         cell.transfer_status(*std::dynamic_pointer_cast<Robot>(cell.get_entity()), gen);
+        robot.update_statuses();
 
         return true;
     }

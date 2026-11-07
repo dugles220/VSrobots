@@ -4,6 +4,7 @@
 
 #define MAX_DAMAGE_BLOCK 100
 #define DEFAULT_DAMAGE_BLOCK 10
+#define SHIELD_STATUS_NAME "Shield"
 
 class ShieldStatus : public Status {
 private:
@@ -19,6 +20,6 @@ public:
 
     int absorb_damage(int incoming_damage);
 
-    void stack(std::vector<std::unique_ptr<Status>> statuses);
+    void stack(std::vector<std::unique_ptr<Status>>& statuses);
 
 };

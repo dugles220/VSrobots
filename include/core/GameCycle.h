@@ -1,8 +1,14 @@
 #pragma once
 
+#include <string>
+
 #include "Field.h"
-#include "ConsoleRenderer.h"
+#include "Renderer.h"
 #include "AIController.h"
+#include "PlayerCommand.h"
+#include "InputMode.h"
+#include "TurnPhase.h"
+#include "EventLog.h"
 
 #include "AbilitiesCatalog.h"
 
@@ -12,36 +18,40 @@
 #include "SlowdownStatus.h"
 #include "GameConstants.h"
 
-#define BAD_INPUT '0'
-
 class GameCycle{
 
 private:
     Field field;
-    ConsoleRenderer renderer;
+    TurnPhase turn_phase = TurnPhase::StartTurn;
     size_t turn = 0;
     AIController ai;
     AbilitiesCatalog ac;
+    InputMode input_mode = InputMode::AbilityPick;
+    EventLog log;
+
+    int available_moves = 0;
 
 public:
 
     GameCycle(size_t field_height, size_t field_width);
 
-    void run();
-    bool is_game_over(std::shared_ptr<Robot> player);
+    void update();
+    bool is_game_over();
 
-    void process_player_input(std::shared_ptr<Robot> player);
-    void process_enemies(Robot& player);
+    void process_input(PlayerCommand command);
+    void process_player_action(PlayerCommand command);
+    void process_enemies();
     void process_start_turn();
     void process_end_turn();
     void update_visibility(std::shared_ptr<Robot> player);
 
-    void print_abilities(std::string msg,
-                         const std::vector<std::unique_ptr<Ability>>& abilities) const;
-    void process_ability_pick(Robot& player);
-    bool process_ability_use(Robot& player);
-    Cell& process_cell_pick(Robot& player);
+    void process_ability_pick(int index);
+    bool process_ability_use(int index, Cell* picked_cell);
 
     size_t get_turn() const;
+    Field& get_field();
+    InputMode get_input_mode() const;
+    void set_input_mode(InputMode mode);
+    const EventLog& get_log();
 
 };

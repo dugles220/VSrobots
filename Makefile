@@ -9,13 +9,14 @@ FLAGS = -Wall -Wextra -Werror -std=c++20 -g \
 		-Iinclude/statuses \
 		-Iinclude/abilities \
 		-Iinclude/entities/levels
+SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 SRC_DIR = src
 OBJ_DIR = obj
 SOURCES = $(shell find src -name '*.cpp')
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 all: $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(TARGET) $(FLAGS)
+	$(CC) $(OBJECTS) -o $(TARGET) $(FLAGS) $(SFML_LIBS)
 	@echo "Программа скомпилирована в файл $(TARGET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)

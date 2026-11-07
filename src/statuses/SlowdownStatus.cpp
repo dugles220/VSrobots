@@ -1,8 +1,12 @@
 #include "SlowdownStatus.h"
 
-SlowdownStatus::SlowdownStatus(): turns(DEFAULT_SLOWDOWN_DUR){}
+SlowdownStatus::SlowdownStatus() : 
+    Status(SLOWDOWN_STATUS_NAME),
+    turns(DEFAULT_SLOWDOWN_DUR){}
 
-SlowdownStatus::SlowdownStatus(size_t turns): turns(turns){
+SlowdownStatus::SlowdownStatus(size_t turns) : 
+    Status(SLOWDOWN_STATUS_NAME),
+    turns(turns){
     if(turns > MAX_SLOWDOWN_DUR) this->turns = MAX_SLOWDOWN_DUR;
 }
 
@@ -17,9 +21,9 @@ void SlowdownStatus::set_turns(size_t value){
     if(value > MAX_SLOWDOWN_DUR) turns = MAX_SLOWDOWN_DUR;
     else turns = value;
 }
-size_t SlowdownStatus::get_turns() const{ return turns; }
+int SlowdownStatus::get_turns() const{ return turns; }
 
-void SlowdownStatus::stack(std::vector<std::unique_ptr<Status>> statuses){
+void SlowdownStatus::stack(std::vector<std::unique_ptr<Status>>& statuses){
     for(int i = static_cast<int>(statuses.size() - 1); i >= 0; i--){
 
         SlowdownStatus* s = dynamic_cast<SlowdownStatus*>(statuses[i].get());

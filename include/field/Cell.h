@@ -49,5 +49,6 @@ public:
     void generate_statuses(std::mt19937& gen);
     void transfer_status(Robot& robot, std::mt19937& gen);
     std::unique_ptr<Status> generate_random_status(std::mt19937& gen);
+    std::vector<std::unique_ptr<Status>>& get_statuses() { return statuses; } 
 
 };

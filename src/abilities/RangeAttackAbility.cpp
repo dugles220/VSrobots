@@ -21,7 +21,7 @@ bool RangeAttackAbility::use(Robot& robot, TurnContext& context, AbilityTarget& 
 
     if(target.entity == nullptr) return false;
 
-    if(!robot.decrease_energy(get_energy_cost() - ATTACK_COST)) return false;
+    if(!robot.decrease_energy(get_energy_cost())) return false;
 
     if(robot.get_team() == target.entity->get_team()) return false;
     else{
@@ -37,18 +37,16 @@ bool RangeAttackAbility::use(Robot& robot, TurnContext& context, AbilityTarget& 
         dy = abs((int)ry - (int)ty);
 
         if(pow(dx, 2) + pow(dy, 2) <= pow(radius, 2)){
-            bool is_success = robot.attack(*target.entity);
-            if(is_success){
-                if(const auto& robot = dynamic_cast<Robot*>(target.entity)){
-                    robot->add_status(std::make_unique<BurnStatus>());
-                }
+            target.entity->take_damage(robot.get_damage());
+            if(const auto& robot = dynamic_cast<Robot*>(target.entity)){
+                robot->add_status(std::make_unique<BurnStatus>());
             }
 
-            return is_success;
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
 bool RangeAttackAbility::is_target_required() const { return true; }

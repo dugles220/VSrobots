@@ -2,6 +2,8 @@
 
 #include "Status.h"
 
+#define OVERLOAD_STATUS_NAME "Overload"
+
 class OverloadStatus : public Status {
 
 private:
@@ -15,6 +17,6 @@ public:
     bool is_expired() const;
     bool blocks_ability();
 
-    void stack(std::vector<std::unique_ptr<Status>> statuses);
+    void stack(std::vector<std::unique_ptr<Status>>& statuses);
 
 };

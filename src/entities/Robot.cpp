@@ -151,6 +151,8 @@ void Robot::update_statuses(){
 
         if(s->is_expired()){
             statuses.erase(statuses.begin() + i);
+        } else {
+            s->stack(statuses);
         }
     }
 }

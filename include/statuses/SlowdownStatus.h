@@ -4,6 +4,7 @@
 
 #define DEFAULT_SLOWDOWN_DUR 1
 #define MAX_SLOWDOWN_DUR 5
+#define SLOWDOWN_STATUS_NAME "Slowdown"
 
 class SlowdownStatus : public Status {
 
@@ -20,8 +21,8 @@ public:
     void decrease_turns(size_t turns_count);
 
     void set_turns(size_t value);
-    size_t get_turns() const;
+    int get_turns() const;
     
-    void stack(std::vector<std::unique_ptr<Status>> statuses);
+    void stack(std::vector<std::unique_ptr<Status>>& statuses);
 
 };

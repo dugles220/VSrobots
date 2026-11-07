@@ -7,6 +7,8 @@
 #define DEFAULT_BURN_DUR 5
 #define MAX_BURN_DUR 10
 
+#define BURN_STATUS_NAME "Burn"
+
 class BurnStatus : public Status {
 
 private:
@@ -29,8 +31,8 @@ public:
     void decrease_turns(size_t turns_count);
 
     void set_turns(size_t value);
-    size_t get_turns() const;
+    int get_turns() const;
 
-    void stack(std::vector<std::unique_ptr<Status>> statuses);
+    void stack(std::vector<std::unique_ptr<Status>>& statuses);
 
 };
