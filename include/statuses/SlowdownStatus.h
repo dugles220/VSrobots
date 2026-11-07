@@ -18,7 +18,6 @@ public:
     bool is_expired() const;
 
     void increase_turns(size_t turns_count);
-    void decrease_turns(size_t turns_count);
 
     void set_turns(size_t value);
     int get_turns() const;
