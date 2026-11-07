@@ -20,6 +20,7 @@ public:
     void render(InputMode mode, const EventLog& log);
 
     void render_cells();
+    void render_statuses(sf::Vector2f pos, Cell& cell);
     void render_entities();
     void render_ui();
     void render_ability_menu();
