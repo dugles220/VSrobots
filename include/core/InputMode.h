@@ -4,5 +4,6 @@ enum class InputMode {
     Normal,
     AbilityPick,
     AbilityUse,
-    TargetPick
+    TargetPick,
+    ItemUse
 };

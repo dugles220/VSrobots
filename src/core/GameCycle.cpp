@@ -288,6 +288,26 @@ void GameCycle::process_ability_pick(int index){
     input_mode = InputMode::Normal;
 }
 
+void GameCycle::process_item_use(int index){
+
+    if(input_mode != InputMode::ItemUse) return;
+
+    const auto player = std::dynamic_pointer_cast<Robot>(field.get_player());
+    if(!player) return;
+
+    if(index < 0 || index >= (int)player->get_inventory().get_items().size()){
+        log.add(std::format("Item number {} doesn't exist", index), get_turn());
+        return;
+    }
+
+    const auto& item = player->get_inventory().get_items()[index]->get_name();
+
+    log.add(std::format("PLAYER successfully used {} item", item), get_turn());
+    player->get_inventory().use_item(index, *player);
+
+    input_mode = InputMode::Normal;
+}
+
 bool GameCycle::process_ability_use(int index, Cell* picked_cell){
 
     const auto player = std::dynamic_pointer_cast<Robot>(field.get_player());
