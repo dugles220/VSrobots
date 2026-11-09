@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Status.h"
 #include "Ability.h"
+#include "Inventory.h"
 #include "GameConstants.h"
 #include "TurnContext.h"
 
@@ -25,6 +26,7 @@ private:
 
     std::vector<std::unique_ptr<Status>> statuses;
     std::vector<std::unique_ptr<Ability>> abilities;
+    Inventory inventory;
 
     int level = 1;
     int experience = 0;
@@ -68,5 +70,5 @@ public:
     const std::vector<std::unique_ptr<Ability>>& get_abilities();
     void add_ability(std::unique_ptr<Ability> ability);
     
-
+    Inventory& get_inventory() { return inventory; }
 };

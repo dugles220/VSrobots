@@ -2,6 +2,10 @@
 #include "Field.h"
 #include "LevelSystem.h"
 
+#include "HealPotion.h"
+#include "StrengthPotion.h"
+#include "EnergyPotion.h"
+
 #include <format>
 #include <iostream>
 
@@ -84,10 +88,12 @@ void SFMLRenderer::render_cells(){
                 static_cast<float>(cell_size)
             });
 
-            cell.setPosition({
+            sf::Vector2f pos = {
                 static_cast<float>(x * cell_size),
                 static_cast<float>(y * cell_size)
-            });
+            };
+
+            cell.setPosition(pos);
 
             cell.setOutlineColor(sf::Color(100, 100, 100));
             cell.setOutlineThickness(1.f);
@@ -129,43 +135,64 @@ void SFMLRenderer::render_cells(){
                 sf::RectangleShape fog({CELL_SIZE, CELL_SIZE});
                 fog.setFillColor(sf::Color(0, 0, 0, 150));
 
-                fog.setPosition({
-                    static_cast<float>(x * cell_size),
-                    static_cast<float>(y * cell_size)
-                });
+                fog.setPosition(pos);
 
                 window.draw(fog);
             }
 
             if(is_in_radius && c.get_passability() == true && c.get_statuses().size() != 0){
-
-                sf::Vector2f pos = cell.getPosition();
-
-                pos.x += 3;
-                pos.y += 3;
-
-                for(const auto& s : c.get_statuses()){
-
-                    sf::RectangleShape status({5.f, 5.f});
-                    status.setPosition(pos);
-
-                    pos.x += 7;
-
-                    if(dynamic_cast<BurnStatus*>(s.get())){
-                        status.setFillColor(sf::Color(255, 0, 0));
-                    }
-                    else if(dynamic_cast<OverloadStatus*>(s.get())){
-                        status.setFillColor(sf::Color(0, 0, 255));
-                    }
-                    else if(dynamic_cast<SlowdownStatus*>(s.get())){
-                        status.setFillColor(sf::Color(64, 64, 64));
-                    }
-                    
-                    window.draw(status);
-                    
-                }
+                render_statuses(pos, c);
             }
         }
+    }
+}
+
+void SFMLRenderer::render_statuses(sf::Vector2f pos, Cell& cell){
+
+    pos.x += 3;
+    pos.y += 3;
+
+    for(const auto& s : cell.get_statuses()){
+
+        if(const auto* gis = dynamic_cast<GetItemStatus*>(s.get())){
+            sf::CircleShape item(2.5);
+            item.setPosition(pos);
+
+            pos.x += 7;
+
+            if(dynamic_cast<HealPotion*>(gis->get_item().get())){
+                item.setFillColor(sf::Color(255, 0, 0));
+            }
+            else if(dynamic_cast<EnergyPotion*>(gis->get_item().get())){
+                item.setFillColor(sf::Color(0, 0, 255));
+            }
+            else if(dynamic_cast<StrengthPotion*>(gis->get_item().get())){
+                item.setFillColor(sf::Color(255, 128, 0));
+            }
+            
+            window.draw(item);
+        }
+        else{
+
+            sf::RectangleShape status({5.f, 5.f});
+            status.setPosition(pos);
+
+            pos.x += 7;
+
+            if(dynamic_cast<BurnStatus*>(s.get())){
+                status.setFillColor(sf::Color(255, 0, 0));
+            }
+            else if(dynamic_cast<OverloadStatus*>(s.get())){
+                status.setFillColor(sf::Color(0, 0, 255));
+            }
+            else if(dynamic_cast<SlowdownStatus*>(s.get())){
+                status.setFillColor(sf::Color(64, 64, 64));
+            }
+            
+            window.draw(status);
+
+        }            
+        
     }
 }
 
@@ -374,7 +401,48 @@ void SFMLRenderer::render_ui(){
         st_pos.y += s.getLocalBounds().size.y + 10;
 
     }
+
+
+
+    sf::Vector2f position = st_pos;
+    position.y += 20;
+
+    sf::Text title(font, "INVENTORY", 24);
+    title.setFillColor(UIColors::TEXT);
+
+    position.x += (R_PANEL_WIDTH - title.getLocalBounds().size.x) / 2;
+    title.setPosition(position);
+
+    window.draw(title);
+
+    position.x -= (R_PANEL_WIDTH - title.getLocalBounds().size.x) / 2;
+    position.y += title.getLocalBounds().size.y + 10;
+
+    const auto& items = player->get_inventory().get_items();
+
+    if(items.empty()) {
+        sf::Text empty(font, "Empty", 16);
+        empty.setFillColor(UIColors::PANEL);
+        empty.setPosition(position);
+        window.draw(empty);
+        return;
+    }
+
+    i = 1;
+
+    for(const auto& item : items) {
+        sf::Text item_text(font, std::format("{}. {}", i, item->get_name()), 16);
+        item_text.setFillColor(UIColors::TEXT);
+        item_text.setPosition(position);
+        window.draw(item_text);
+
+        position.y += item_text.getLocalBounds().size.y + 8;
+
+        i++;
+    }
 }
+
+
 
 void SFMLRenderer::render_event_log(const EventLog& event_log){
 

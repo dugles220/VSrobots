@@ -79,6 +79,10 @@ void Game::process_key(sf::Keyboard::Key key){
                 case sf::Keyboard::Key::B:
                     game.set_input_mode(InputMode::AbilityUse);
                     break;
+               
+                case sf::Keyboard::Key::I:
+                    game.set_input_mode(InputMode::ItemUse);
+                    break;
                 
                 case sf::Keyboard::Key::Enter:
                     game.process_input(PlayerCommand::Wait);
@@ -148,7 +152,42 @@ void Game::process_key(sf::Keyboard::Key key){
                 default:
                     break;
             }
+            
+            break;
         }
+        case(InputMode::ItemUse):
+
+            switch(key){
+                case sf::Keyboard::Key::Num1:
+                    game.process_item_use(0);
+                    break;
+                
+                case sf::Keyboard::Key::Num2:
+                    game.process_item_use(1);
+                    break;
+
+                case sf::Keyboard::Key::Num3:
+                    game.process_item_use(2);
+                    break;
+                
+                case sf::Keyboard::Key::Num4:
+                    game.process_item_use(3);
+                    break;
+                
+                case sf::Keyboard::Key::Num5:
+                    game.process_item_use(4);
+                    break;
+
+                case sf::Keyboard::Key::Escape:
+                    game.set_input_mode(InputMode::Normal);
+                    break;
+
+                default:
+                    break;
+            }
+
+            break;
+
         default:
             break;
     }

@@ -1,5 +1,9 @@
 #include "Cell.h"
 #include "Robot.h"
+#include "EnergyPotion.h"
+#include "HealPotion.h"
+#include "StrengthPotion.h"
+
 
 #define FIRST_STATUS_PROB 40
 #define SECOND_STATUS_PROB 8
@@ -55,7 +59,7 @@ void Cell::generate_statuses(std::mt19937& gen){
 
 std::unique_ptr<Status> Cell::generate_random_status(std::mt19937& gen){
 
-    std::uniform_int_distribution<int> dist(0, 2);
+    std::uniform_int_distribution<int> dist(0, 5);
 
     switch (dist(gen)) {
         case 0:
@@ -64,8 +68,16 @@ std::unique_ptr<Status> Cell::generate_random_status(std::mt19937& gen){
             return std::make_unique<OverloadStatus>();
         case 2:
             return std::make_unique<SlowdownStatus>();
+        case 3:
+            return std::make_unique<GetItemStatus>(std::make_unique<HealPotion>());
+        case 4:
+            return std::make_unique<GetItemStatus>(std::make_unique<EnergyPotion>());
+        case 5:
+            return std::make_unique<GetItemStatus>(std::make_unique<StrengthPotion>());
+        default:
+            break;    
+    
     }
-
     return nullptr;
 }
 

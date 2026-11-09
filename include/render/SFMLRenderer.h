@@ -20,9 +20,10 @@ public:
     void render(InputMode mode, const EventLog& log);
 
     void render_cells();
+    void render_statuses(sf::Vector2f pos, Cell& cell);
     void render_entities();
     void render_ui();
-    void render_ability_menu();
+    void render_items_menu();
     void render_event_log(const EventLog& event_log);
 
     sf::RenderWindow& get_window() {return window; }

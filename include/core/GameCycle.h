@@ -48,6 +48,8 @@ public:
     void process_ability_pick(int index);
     bool process_ability_use(int index, Cell* picked_cell);
 
+    void process_item_use(int index);
+
     size_t get_turn() const;
     Field& get_field();
     InputMode get_input_mode() const;
